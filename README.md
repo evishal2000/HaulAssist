@@ -1,4 +1,4 @@
-#HaulAssist : An On-demand Delivery Service
+# HaulAssist : An On-demand Delivery Service
 
 Handling logistics and assistance tasks, such as transporting goods, managing luggage, or coordinating last-mile deliveries, can be both challenging and time-consuming. Travelers often deal with the hassle of carrying heavy bags at airports and train stations, small businesses encounter unreliable delivery services, and individuals frequently struggle to find trustworthy help for moving or transportation needs.  
 
