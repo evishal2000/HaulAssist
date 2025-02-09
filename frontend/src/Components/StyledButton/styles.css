@@ -1,0 +1,10 @@
+.styled-button {
+    background: #0071e3;
+    width: 30%;
+    margin: 10px 0px;
+    font-weight: 500;
+    height: 50px;
+    font-size: 20px;
+    font: 'inter';
+    border-radius: 12px;
+}
