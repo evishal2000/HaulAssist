@@ -1,0 +1,16 @@
+.registration-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.registration-form .input-box-text {
+    margin: 10px;
+}
+
+.registration-form-password {
+    width: 30%;
+    height: 48px;
+    margin: 10px;
+}
