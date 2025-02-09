@@ -1,6 +1,7 @@
 package main
 
 import (
+	"haulassist_backend/internal/repository"
 	"log"
 	"net/http"
 	"time"
@@ -11,10 +12,19 @@ import (
 
 type application struct {
 	config config
+	store  repository.Storage
 }
 
 type config struct {
 	addr string
+	db   dbConfig
+}
+
+type dbConfig struct {
+	addr         string
+	maxOpenConns int
+	maxIdleConns int
+	maxIdleTime  string
 }
 
 func (app *application) mount() http.Handler {
@@ -33,9 +43,13 @@ func (app *application) mount() http.Handler {
 
 	r.Route("/v1", func(r chi.Router) {
 		r.Get("/health", app.healthCheckHandler)
-	})
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
+		r.Post("/register", app.AuthRegisterHandler)
+		r.Post("/login", app.AuthLoginHandler)
+
+		r.Route("/user", func(r chi.Router) {
+			r.Use(AuthMiddleware)
+			r.Get("/profile", app.GetProfileHandler)
+		})
 	})
 
 	return r
