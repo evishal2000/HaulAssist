@@ -64,33 +64,16 @@ func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Ca
 	return &cargo, nil
 }
 
-// CreateCargo inserts a new cargo into the database
-func (r *CargoRepository) CreateCargo(ctx context.Context, cargo *model.Cargo) error {
-	query := "INSERT INTO cargo (name, type, weight, length, width, height, cost_per_weight) VALUES (?, ?, ?, ?, ?, ?, ?)"
-	result, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight)
-	if err != nil {
-		return err
-	}
-
-	id, err := result.LastInsertId()
-	if err != nil {
-		return err
-	}
-
-	cargo.CargoID = id
-	return nil
-}
-
 // UpdateCargo updates an existing cargo in the database
 func (r *CargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
-	query := "UPDATE cargo SET name = ?, type = ?, weight = ?, length = ?, width = ?, height = ?, cost_per_weight = ? WHERE id = ?"
+	query := "UPDATE cargo SET name = ?, type = ?, weight = ?, length = ?, width = ?, height = ?, cost_per_weight = ? WHERE cargo_id = ?"
 	_, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
 	return err
 }
 
 // DeleteCargo deletes a cargo from the database
 func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
-	query := "DELETE FROM cargo WHERE id = ?"
+	query := "DELETE FROM cargo WHERE cargo_id = ?"
 	_, err := r.db.ExecContext(ctx, query, id)
 	return err
 }
