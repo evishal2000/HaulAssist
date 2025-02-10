@@ -4,6 +4,7 @@ import { Features } from "../Features";
 import { About } from "../About";
 import { LandingPage } from "../LandingPage";
 import { RegistrationForm } from "../Auth/RegistrationForm";
+import { Dashboard } from "../Dashboard";
 
 export const RouterWrapper = () => {
     return (
@@ -14,6 +15,7 @@ export const RouterWrapper = () => {
         <Route path="/features" element={<Features />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegistrationForm/>} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     );
   };
