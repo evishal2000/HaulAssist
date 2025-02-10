@@ -61,7 +61,7 @@ func (app *application) AuthLoginHandler(w http.ResponseWriter, r *http.Request)
 
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		UserID: int(user.ID),
+		UserID: int(user.UserID),
 		Email:  user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),

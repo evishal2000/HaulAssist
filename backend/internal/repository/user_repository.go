@@ -24,7 +24,7 @@ func (u *UserRepository) Create(ctx context.Context, user *model.User) error {
 		user.Email,
 		user.Password,
 	).Scan(
-		&user.ID,
+		&user.UserID,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 	)
@@ -45,7 +45,7 @@ func (u *UserRepository) GetUserByEmail(ctx context.Context, email string) (*mod
 		query,
 		email,
 	).Scan(
-		&user.ID,
+		&user.UserID,
 		&user.Name,
 		&user.Email,
 		&user.Password,

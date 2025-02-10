@@ -1,7 +1,7 @@
 package model
 
 type Cargo struct {
-	ID            int64  `json:"id"`
+	CargoID       int64  `json:"id"`
 	Name          string `json:"name"`
 	Type          string `json:"type"`
 	Weight        int    `json:"weight"`

@@ -1,0 +1,65 @@
+package repository
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"haulassist_backend/internal/model"
+)
+
+// CargoRepository provides access to the cargo storage
+type CargoRepository struct {
+	db *sql.DB
+}
+
+// NewCargoRepository creates a new CargoRepository
+func NewCargoRepository(db *sql.DB) *CargoRepository {
+	return &CargoRepository{db: db}
+}
+
+// GetCargoByID retrieves a cargo by its ID
+func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Cargo, error) {
+	query := "SELECT id, user_id, name, type, weight, length, width, height, cost_per_weight FROM cargo WHERE id = ?"
+	row := r.db.QueryRowContext(ctx, query, id)
+
+	var cargo model.Cargo
+	if err := row.Scan(&cargo.CargoID, &cargo.Name, &cargo.Type, &cargo.Weight, &cargo.Length, &cargo.Width, &cargo.Height, &cargo.CostPerWeight); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("cargo not found")
+		}
+		return nil, err
+	}
+
+	return &cargo, nil
+}
+
+// CreateCargo inserts a new cargo into the database
+func (r *CargoRepository) CreateCargo(ctx context.Context, cargo *model.Cargo) error {
+	query := "INSERT INTO cargo (name, type, weight, length, width, height, cost_per_weight) VALUES (?, ?, ?, ?, ?, ?, ?)"
+	result, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight)
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	cargo.CargoID = id
+	return nil
+}
+
+// UpdateCargo updates an existing cargo in the database
+func (r *CargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
+	query := "UPDATE cargo SET name = ?, type = ?, weight = ?, length = ?, width = ?, height = ?, cost_per_weight = ? WHERE id = ?"
+	_, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
+	return err
+}
+
+// DeleteCargo deletes a cargo from the database
+func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
+	query := "DELETE FROM cargo WHERE id = ?"
+	_, err := r.db.ExecContext(ctx, query, id)
+	return err
+}
