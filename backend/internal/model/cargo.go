@@ -9,4 +9,7 @@ type Cargo struct {
 	Width         int    `json:"width"`
 	Height        int    `json:"height"`
 	CostPerWeight int    `json:"cost_per_weight"`
+	UserID        int64  `json:"user_id"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
 }

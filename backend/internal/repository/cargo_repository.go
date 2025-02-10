@@ -13,13 +13,44 @@ type CargoRepository struct {
 }
 
 // NewCargoRepository creates a new CargoRepository
-func NewCargoRepository(db *sql.DB) *CargoRepository {
+func Create(db *sql.DB) *CargoRepository {
 	return &CargoRepository{db: db}
+}
+
+func (u *CargoRepository) Create(ctx context.Context, cargo *model.Cargo) error {
+
+	query := `
+		INSERT INTO cargo (user_id, name, type, weight, length, width, height, cost_per_weight)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING cargo_id, created_at, updated_at
+	`
+
+	err := u.db.QueryRowContext(
+		ctx,
+		query,
+		cargo.UserID,
+		cargo.Name,
+		cargo.Type,
+		cargo.Weight,
+		cargo.Length,
+		cargo.Width,
+		cargo.Height,
+		cargo.CostPerWeight,
+	).Scan(
+		&cargo.CargoID,
+		&cargo.CreatedAt,
+		&cargo.UpdatedAt,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // GetCargoByID retrieves a cargo by its ID
 func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Cargo, error) {
-	query := "SELECT id, user_id, name, type, weight, length, width, height, cost_per_weight FROM cargo WHERE id = ?"
+	query := "SELECT cargo_id, user_id, name, type, weight, length, width, height, cost_per_weight FROM cargo WHERE id = ?"
 	row := r.db.QueryRowContext(ctx, query, id)
 
 	var cargo model.Cargo
