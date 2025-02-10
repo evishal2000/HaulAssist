@@ -50,12 +50,12 @@ func (app *application) AuthLoginHandler(w http.ResponseWriter, r *http.Request)
 	ctx := r.Context()
 	user, err := app.store.Users.GetUserByEmail(ctx, req.Email)
 	if err != nil {
-		http.Error(w, "Invalid email or password "+err.Error(), http.StatusUnauthorized)
+		http.Error(w, "That email doesn't exist!"+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
-		http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+		http.Error(w, "Invalid password", http.StatusUnauthorized)
 		return
 	}
 
