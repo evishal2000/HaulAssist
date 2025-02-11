@@ -1,3 +1,8 @@
+# Git repo
+https://github.com/evishal2000/HaulAssist
+
+
+
 # User Story 1: Authentication for HaulAssist (Front end)
 
 ## As a user,
@@ -24,10 +29,9 @@ So that I can access logistics and assistance services.
 - Login/Register options for the user.
 - Token expiration requires re-login.
 
-## Front-end (ReactJS):
+### Front-end (ReactJS):
 - Recoil for state management.
 - Axios for API calls.
-
 
 
 # User Story 2: Backend for Login page and Authentication
@@ -55,3 +59,23 @@ and any cargo associated with the account
 - Create a cargo model for storing data on the cargo
 - Handle special conditions like fragility and oversized loads
 - Create a repository to query and return cargo data
+
+
+
+# Issues
+- Unified landing page for the app with links to different parts of the app
+- User account registration and authentication system
+- PostgreSQL schema finalization (for user and cargo models)
+
+
+
+# Successfully completed issues
+- Unified landing page for the app with links to different parts of the app
+- User account registration and authentication system
+
+
+
+# Pending issues
+- PostgreSQL schema finalization (for user and cargo models):
+Need to refine join conditions for retrieval of user and cargo models, which will happen as we flesh out the app more.
+
