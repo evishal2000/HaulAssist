@@ -45,6 +45,7 @@ func (app *application) mount() http.Handler {
 		r.Get("/health", app.healthCheckHandler)
 		r.Post("/register", app.AuthRegisterHandler)
 		r.Post("/login", app.AuthLoginHandler)
+		r.Get("/location", GetCoordinatesHandler)
 
 		r.Route("/user", func(r chi.Router) {
 			r.Use(AuthMiddleware)
