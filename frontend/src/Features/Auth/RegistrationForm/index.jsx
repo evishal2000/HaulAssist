@@ -3,7 +3,9 @@ import { StyledButton } from "../../../Components/StyledButton";
 import "./styles.css";
 import { InputBox } from "../../../Components/TextInputBox";
 import { useState } from "react";
-
+import { useSetRecoilState } from 'recoil';
+import { authState } from "../authState";
+import { useAxios } from "../../../Utils/axiosInstance";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -13,15 +15,43 @@ const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
-export const RegistrationForm = ({ isRoutedViaCollegeForm = true }) => {
+
+export const RegistrationForm = () => {
   const [form] = Form.useForm();
   const [api, contextHolder] = notification.useNotification();
-  const { Title } = Typography;
+  const setAuthState = useSetRecoilState(authState);
+  const axios = useAxios();
+  
   const [userDetails, setUserDetails] = useState({
     name: form.getFieldValue("name"),
     email: form.getFieldValue("email"),
     password: form.getFieldValue("password"),
   });
+ 
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('/v1/register', {
+        email: userDetails.email,
+        password: userDetails.password,
+      });
+       console.log(response);
+
+      const { token, user } = response.data; 
+       console.log(token);
+      // Update Recoil state
+      setAuthState({ user, token });
+
+      api.success({
+        message: 'Login Successful',
+        description: 'You have successfully logged in.',
+      });
+    } catch (error) {
+      api.error({
+        message: 'Login Failed',
+        description: error.response?.data?.message || 'An error occurred during login.',
+      });
+    }
+  };
 
 
   return (
@@ -82,10 +112,7 @@ export const RegistrationForm = ({ isRoutedViaCollegeForm = true }) => {
             !userDetails?.email?.length ||
             !userDetails?.password?.length
           }
-          onClick={() => {
-        //    call the backend register api
-          }}
-        >
+          onClick={handleRegister} >
           Register
         </StyledButton>
       </Form>
