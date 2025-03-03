@@ -36,8 +36,8 @@ func (app *Application) AuthRegisterHandler(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Error creating user "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Write([]byte("User Successfully Registered"))
 	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("User Successfully Registered"))
 }
 
 func (app *Application) AuthLoginHandler(w http.ResponseWriter, r *http.Request) {

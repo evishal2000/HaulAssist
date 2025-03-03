@@ -6,15 +6,19 @@ import (
 	"haulassist_backend/internal/model"
 )
 
+type UserInterface interface {
+	Create(context.Context, *model.User) error
+	GetUserByEmail(context.Context, string) (*model.User, error)
+}
+
+type CargoInterface interface {
+	Create(context.Context, *model.Cargo) error
+	GetCargoByID(context.Context, int64) (*model.Cargo, error)
+}
+
 type Storage struct {
-	Users interface {
-		Create(context.Context, *model.User) error
-		GetUserByEmail(context.Context, string) (*model.User, error)
-	}
-	Cargo interface {
-		Create(context.Context, *model.Cargo) error
-		GetCargoByID(context.Context, int64) (*model.Cargo, error)
-	}
+	Users UserInterface
+	Cargo CargoInterface
 }
 
 func NewStorage(db *sql.DB) Storage {
