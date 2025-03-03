@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -19,7 +19,7 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-func (app *application) AuthRegisterHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) AuthRegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name     string `json:"name"`
 		Email    string `json:"email"`
@@ -31,7 +31,7 @@ func (app *application) AuthRegisterHandler(w http.ResponseWriter, r *http.Reque
 
 	user := &model.User{Name: req.Name, Email: req.Email, Password: string(hashedPassword)}
 	ctx := r.Context() //context of the request
-	err := app.store.Users.Create(ctx, user)
+	err := app.Store.Users.Create(ctx, user)
 	if err != nil {
 		http.Error(w, "Error creating user "+err.Error(), http.StatusInternalServerError)
 		return
@@ -40,7 +40,7 @@ func (app *application) AuthRegisterHandler(w http.ResponseWriter, r *http.Reque
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (app *application) AuthLoginHandler(w http.ResponseWriter, r *http.Request) {
+func (app *Application) AuthLoginHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
@@ -48,7 +48,7 @@ func (app *application) AuthLoginHandler(w http.ResponseWriter, r *http.Request)
 	json.NewDecoder(r.Body).Decode(&req)
 
 	ctx := r.Context()
-	user, err := app.store.Users.GetUserByEmail(ctx, req.Email)
+	user, err := app.Store.Users.GetUserByEmail(ctx, req.Email)
 	if err != nil {
 		http.Error(w, "That email doesn't exist!"+err.Error(), http.StatusUnauthorized)
 		return
