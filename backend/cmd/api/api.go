@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"haulassist_backend/internal/repository"
@@ -10,24 +10,24 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-type application struct {
-	config config
-	store  repository.Storage
+type Application struct {
+	Config Config
+	Store  repository.Storage
 }
 
-type config struct {
-	addr string
-	db   dbConfig
+type Config struct {
+	Addr string
+	Db   DbConfig
 }
 
-type dbConfig struct {
-	addr         string
-	maxOpenConns int
-	maxIdleConns int
-	maxIdleTime  string
+type DbConfig struct {
+	Addr         string
+	MaxOpenConns int
+	MaxIdleConns int
+	MaxIdleTime  string
 }
 
-func (app *application) mount() http.Handler {
+func (app *Application) Mount() http.Handler {
 	r := chi.NewRouter()
 
 	// A good base middleware stack
@@ -56,14 +56,14 @@ func (app *application) mount() http.Handler {
 	return r
 }
 
-func (app *application) run(mux http.Handler) error {
+func (app *Application) Run(mux http.Handler) error {
 
 	server := &http.Server{
-		Addr:    app.config.addr,
+		Addr:    app.Config.Addr,
 		Handler: mux,
 	}
 
-	log.Printf("server has started at port %s", app.config.addr)
+	log.Printf("server has started at port %s", app.Config.Addr)
 
 	return server.ListenAndServe()
 }
