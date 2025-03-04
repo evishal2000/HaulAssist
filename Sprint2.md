@@ -1,151 +1,71 @@
-# Backend API Documentation
+# User Story: End-to-End Testing, Integration Testing, and Frontend-Backend Integration for HaulAssist
 
-## Overview
-This text provides documentation of the backend API for the HaulAssist project. The API allows clients to interact with the system to manage hauling operations.
+## As a development team member,
+I want to perform comprehensive end-to-end (E2E) and integration testing for HaulAssist, and integrate the frontend with the backend,
+So that we can ensure the reliability, functionality, and seamless interaction of our entire system.
 
-## Base URL
-```
-http://api.haulassist.com/v1
-```
+## Acceptance Criteria
+- E2E tests are written for all key user flows using Cypress
+- Integration tests are created to verify interactions between frontend and backend
+- Frontend is successfully integrated with backend APIs
+- Test coverage includes main pages, authentication flow, and API interactions
+- All tests pass successfully before code is merged into the main branch
 
-## Endpoints
+## Tasks
+- Develop E2E tests for main user flows
+- Create integration tests for frontend-backend API interactions
+- Set up Cypress for automated E2E testing
+- Implement API mocking and real API tests for integration testing
+- Integrate frontend components with backend APIs
+- Ensure proper error handling and data flow between frontend and backend
+- Debug and fix any failing tests or integration issues
 
-### 1. Get All Hauls
-Retrieve a list of all hauls.
 
-**URL:** `/hauls`
+# Frontend Unit Tests
 
-**Method:** `GET`
 
-**Headers:**
-```
-Authorization: Bearer YOUR_API_KEY
-```
+# Backend Unit Tests
 
-**Response:**
-```json
-[
-    {
-        "id": "haul1",
-        "origin": "Location A",
-        "destination": "Location B",
-        "status": "in-progress"
-    },
-    ...
-]
-```
+## Auth Handler tests
+- TestAuthRegisterHandler : Tests the new user registration functionality of HaulAssist
+- TestAuthRegisterHandlerFail : Tests the failure case for new user registration
+- TestLoginHandler : Tests Login functionality of HaulAssist
+- TestLoginHandlerFail : Tests the failure case for login
+- TestGetProfileHandler : Tests fetching user profile
 
-### 2. Create a New Haul
-Create a new haul.
 
-**URL:** `/hauls`
+# Backend API documentation
 
-**Method:** `POST`
+r.Get("/health", app.healthCheckHandler)
+		r.Post("/register", app.AuthRegisterHandler)
+		r.Post("/login", app.AuthLoginHandler)
+		r.Get("/location", GetCoordinatesHandler)
 
-**Headers:**
-```
-Authorization: Bearer YOUR_API_KEY
-Content-Type: application/json
-```
+		r.Route("/user", func(r chi.Router) {
+			r.Use(AuthMiddleware)
+			r.Get("/profile", app.GetProfileHandler)
 
-**Body:**
-```json
-{
-    "origin": "Location A",
-    "destination": "Location B",
-    "details": "Additional details about the haul"
-}
-```
+## v1/health    GET
+This is a utility function to check if the server is up and running successfully.
+- Authorization : None
+- Parameters : None
+- Response : HTTP 200 response
 
-**Response:**
-```json
-{
-    "id": "haul2",
-    "origin": "Location A",
-    "destination": "Location B",
-    "status": "pending"
-}
-```
 
-### 3. Get Haul Details
-Retrieve details of a specific haul.
+## v1/register  POST
+This endpoint registers a new user with the platform
+- Authorization : None
+- Parameters: name, email, password
+- Response : HTTP 200 response
 
-**URL:** `/hauls/{id}`
+## v1/login    POST
+This endpoint allows a pre-existing user to log into HaulAssist
+- Authorization : None
+- Parameters : email, password
+- Response : String authorization token
 
-**Method:** `GET`
-
-**Headers:**
-```
-Authorization: Bearer YOUR_API_KEY
-```
-
-**Response:**
-```json
-{
-    "id": "haul1",
-    "origin": "Location A",
-    "destination": "Location B",
-    "status": "in-progress",
-    "details": "Additional details about the haul"
-}
-```
-
-### 4. Update Haul Status
-Update the status of a specific haul.
-
-**URL:** `/hauls/{id}/status`
-
-**Method:** `PATCH`
-
-**Headers:**
-```
-Authorization: Bearer YOUR_API_KEY
-Content-Type: application/json
-```
-
-**Body:**
-```json
-{
-    "status": "completed"
-}
-```
-
-**Response:**
-```json
-{
-    "id": "haul1",
-    "status": "completed"
-}
-```
-
-### 5. Delete a Haul
-Delete a specific haul.
-
-**URL:** `/hauls/{id}`
-
-**Method:** `DELETE`
-
-**Headers:**
-```
-Authorization: Bearer YOUR_API_KEY
-```
-
-**Response:**
-```json
-{
-    "message": "Haul deleted successfully"
-}
-```
-
-## Error Handling
-All error responses follow the format below:
-
-**Response:**
-```json
-{
-    "error": "Error message"
-}
-```
-
-## Contact
-For any questions or issues, please contact the API support team at support@haulassist.com.
+## v1/user/profile GET
+This endpoint allows a user to fetch their profile from the DB
+- Authorization : String authorization token
+- Parameters : None
+- Response : JSON object[] of user model
