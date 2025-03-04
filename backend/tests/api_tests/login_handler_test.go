@@ -30,7 +30,7 @@ func TestLoginHandler(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"email":"john@example.com","password":"password123"}`
-	req := httptest.NewRequest("POST", "/register", bytes.NewBufferString(reqBody))
+	req := httptest.NewRequest("POST", "/login", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -60,7 +60,7 @@ func TestLoginHandlerFail(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"email":"john@example.com","password":"password123"}`
-	req := httptest.NewRequest("POST", "/register", bytes.NewBufferString(reqBody))
+	req := httptest.NewRequest("POST", "/login", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -70,10 +70,10 @@ func TestLoginHandlerFail(t *testing.T) {
 	}
 
 	mockUserStore.On("GetUserByEmail", mock.Anything, mock.Anything).Return(&model.User{Password: string(hashedPassword)}, errors.New("Error fetching user"))
-	app.AuthRegisterHandler(w, req)
+	app.AuthLoginHandler(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
-	assert.Equal(t, http.StatusInternalServerError, resp.StatusCode)
+	assert.Equal(t, http.StatusUnauthorized, resp.StatusCode)
 	// mockStore.AssertExpectations(t)
 }
