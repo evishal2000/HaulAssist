@@ -26,12 +26,12 @@ So that we can ensure the reliability, functionality, and seamless interaction o
 
 # Backend Unit Tests
 
-## Auth Handler tests
 - TestAuthRegisterHandler : Tests the new user registration functionality of HaulAssist
 - TestAuthRegisterHandlerFail : Tests the failure case for new user registration
 - TestLoginHandler : Tests Login functionality of HaulAssist
 - TestLoginHandlerFail : Tests the failure case for login
 - TestGetProfileHandler : Tests fetching user profile
+- TestGetCoordinatesHandler : Success, Missing Attribute and Internal Server Error Test cases
 
 
 # Backend API documentation
