@@ -36,15 +36,6 @@ So that we can ensure the reliability, functionality, and seamless interaction o
 
 # Backend API documentation
 
-r.Get("/health", app.healthCheckHandler)
-		r.Post("/register", app.AuthRegisterHandler)
-		r.Post("/login", app.AuthLoginHandler)
-		r.Get("/location", GetCoordinatesHandler)
-
-		r.Route("/user", func(r chi.Router) {
-			r.Use(AuthMiddleware)
-			r.Get("/profile", app.GetProfileHandler)
-
 ## v1/health    GET
 This is a utility function to check if the server is up and running successfully.
 - Authorization : None
