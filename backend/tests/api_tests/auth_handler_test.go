@@ -6,7 +6,6 @@ import (
 
 	// "errors"
 	"haulassist_backend/cmd/api"
-	"haulassist_backend/internal/repository"
 	"haulassist_backend/tests/mocks"
 	"net/http"
 	"net/http/httptest"
@@ -18,19 +17,17 @@ import (
 
 func TestAuthRegisterHandler(t *testing.T) {
 
-	mockUserStore := &mocks.MockUserRepository{}
-	mockCargoStore := &mocks.MockCargoRepository{}
+	mockRepo := &mocks.MockRepository{}
 
-	mockStore := repository.Storage{
-		Users: mockUserStore,
-		Cargo: mockCargoStore,
-	}
+	mockStore := mockRepo.GetMockStore()
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"name":"John Doe","email":"john@example.com","password":"password123"}`
 	req := httptest.NewRequest("POST", "/register", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
+
+	mockUserStore := mockStore.Users.(*mocks.MockUserRepository)
 
 	mockUserStore.On("Create", mock.Anything, mock.AnythingOfType("*model.User")).Return(nil)
 	app.AuthRegisterHandler(w, req)
@@ -43,19 +40,17 @@ func TestAuthRegisterHandler(t *testing.T) {
 
 func TestAuthRegisterHandlerFail(t *testing.T) {
 
-	mockUserStore := &mocks.MockUserRepository{}
-	mockCargoStore := &mocks.MockCargoRepository{}
+	mockRepo := &mocks.MockRepository{}
 
-	mockStore := repository.Storage{
-		Users: mockUserStore,
-		Cargo: mockCargoStore,
-	}
+	mockStore := mockRepo.GetMockStore()
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"name":"John Doe","email":"john@example.com","password":"password123"}`
 	req := httptest.NewRequest("POST", "/register", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
+
+	mockUserStore := mockStore.Users.(*mocks.MockUserRepository)
 
 	mockUserStore.On("Create", mock.Anything, mock.Anything).Return(errors.New("Error creating user"))
 	app.AuthRegisterHandler(w, req)

@@ -7,7 +7,6 @@ import (
 	// "errors"
 	"haulassist_backend/cmd/api"
 	"haulassist_backend/internal/model"
-	"haulassist_backend/internal/repository"
 	"haulassist_backend/tests/mocks"
 	"net/http"
 	"net/http/httptest"
@@ -20,13 +19,9 @@ import (
 
 func TestLoginHandler(t *testing.T) {
 
-	mockUserStore := &mocks.MockUserRepository{}
-	mockCargoStore := &mocks.MockCargoRepository{}
+	mockRepo := &mocks.MockRepository{}
 
-	mockStore := repository.Storage{
-		Users: mockUserStore,
-		Cargo: mockCargoStore,
-	}
+	mockStore := mockRepo.GetMockStore()
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"email":"john@example.com","password":"password123"}`
@@ -38,6 +33,8 @@ func TestLoginHandler(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to hash password: %v", err)
 	}
+
+	mockUserStore := mockStore.Users.(*mocks.MockUserRepository)
 
 	mockUserStore.On("GetUserByEmail", mock.Anything, mock.Anything).Return(&model.User{Password: string(hashedPassword)}, nil)
 	app.AuthLoginHandler(w, req)
@@ -50,13 +47,9 @@ func TestLoginHandler(t *testing.T) {
 
 func TestLoginHandlerFail(t *testing.T) {
 
-	mockUserStore := &mocks.MockUserRepository{}
-	mockCargoStore := &mocks.MockCargoRepository{}
+	mockRepo := &mocks.MockRepository{}
 
-	mockStore := repository.Storage{
-		Users: mockUserStore,
-		Cargo: mockCargoStore,
-	}
+	mockStore := mockRepo.GetMockStore()
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `{"email":"john@example.com","password":"password123"}`
@@ -68,6 +61,8 @@ func TestLoginHandlerFail(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to hash password: %v", err)
 	}
+
+	mockUserStore := mockStore.Users.(*mocks.MockUserRepository)
 
 	mockUserStore.On("GetUserByEmail", mock.Anything, mock.Anything).Return(&model.User{Password: string(hashedPassword)}, errors.New("Error fetching user"))
 	app.AuthLoginHandler(w, req)
