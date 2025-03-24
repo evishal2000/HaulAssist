@@ -66,14 +66,25 @@ func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Ca
 
 // UpdateCargo updates an existing cargo in the database
 func (r *CargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
-	query := "UPDATE cargo SET name = ?, type = ?, weight = ?, length = ?, width = ?, height = ?, cost_per_weight = ? WHERE cargo_id = ?"
-	_, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
-	return err
+	query := "UPDATE cargo SET name = $1, type = $2, weight = $3, length = $4, width = $5, height = $6, cost_per_weight = $7 WHERE cargo_id = $8 RETURNING cargo_id"
+
+	row := r.db.QueryRowContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
+	var updatedCargo model.Cargo
+	if err := row.Scan(&updatedCargo.CargoID); err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("cargo not found")
+		}
+		return err
+	}
+
+	return nil
+	// _, err := r.db.ExecContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
+	// return err
 }
 
 // DeleteCargo deletes a cargo from the database
 func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
-	query := "DELETE FROM cargo WHERE cargo_id = ?"
+	query := "DELETE FROM cargo WHERE cargo_id = $1"
 	_, err := r.db.ExecContext(ctx, query, id)
 	return err
 }

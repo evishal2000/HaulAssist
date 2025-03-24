@@ -55,6 +55,8 @@ func (app *Application) Mount() http.Handler {
 		r.Route("/cargo", func(r chi.Router) {
 			r.Post("/addCargo", app.CreateCargoHandler)
 			r.Get("/{cargo_id}", app.GetCargoByIDHandler)
+			r.Put("/{cargo_id}", app.UpdateCargoHandler)
+			r.Delete("/{cargo_id}", app.DeleteCargoByIDHandler)
 		})
 	})
 

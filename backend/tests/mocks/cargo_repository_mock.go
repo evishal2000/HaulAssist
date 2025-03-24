@@ -19,3 +19,11 @@ func (m *MockCargoRepository) GetCargoByID(ctx context.Context, cargoId int64) (
 	args := m.Called(ctx, cargoId)
 	return args.Get(0).(*model.Cargo), args.Error(1)
 }
+
+func (m *MockCargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
+	return nil
+}
+
+func (m *MockCargoRepository) DeleteCargo(ctx context.Context, cargoId int64) error {
+	return nil
+}
