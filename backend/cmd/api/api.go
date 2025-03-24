@@ -51,6 +51,11 @@ func (app *Application) Mount() http.Handler {
 			r.Use(AuthMiddleware)
 			r.Get("/profile", app.GetProfileHandler)
 		})
+
+		r.Route("/cargo", func(r chi.Router) {
+			r.Post("/addCargo", app.CreateCargoHandler)
+			r.Get("/{cargo_id}", app.GetCargoByIDHandler)
+		})
 	})
 
 	return r
