@@ -14,7 +14,7 @@ import (
 var jwtSecret = []byte(env.GetString("JWT_SECRET", "SecretKey")) //later change in env file
 
 type Claims struct {
-	UserID int    `json:"user_id"`
+	UserID int64  `json:"user_id"`
 	Email  string `json:"email"`
 	jwt.RegisteredClaims
 }
@@ -61,7 +61,7 @@ func (app *Application) AuthLoginHandler(w http.ResponseWriter, r *http.Request)
 
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
-		UserID: int(user.UserID),
+		UserID: int64(user.UserID),
 		Email:  user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),

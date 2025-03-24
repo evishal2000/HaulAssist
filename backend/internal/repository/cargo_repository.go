@@ -50,11 +50,11 @@ func (u *CargoRepository) Create(ctx context.Context, cargo *model.Cargo) error 
 
 // GetCargoByID retrieves a cargo by its ID
 func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Cargo, error) {
-	query := "SELECT cargo_id, user_id, name, type, weight, length, width, height, cost_per_weight FROM cargo WHERE id = ?"
+	query := "SELECT cargo_id, user_id, name, type, weight, length, width, height, cost_per_weight, created_at, updated_at FROM cargo WHERE cargo_id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
 
 	var cargo model.Cargo
-	if err := row.Scan(&cargo.CargoID, &cargo.Name, &cargo.Type, &cargo.Weight, &cargo.Length, &cargo.Width, &cargo.Height, &cargo.CostPerWeight); err != nil {
+	if err := row.Scan(&cargo.CargoID, &cargo.UserID, &cargo.Name, &cargo.Type, &cargo.Weight, &cargo.Length, &cargo.Width, &cargo.Height, &cargo.CostPerWeight, &cargo.CreatedAt, &cargo.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("cargo not found")
 		}
