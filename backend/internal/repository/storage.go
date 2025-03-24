@@ -14,6 +14,8 @@ type UserInterface interface {
 type CargoInterface interface {
 	Create(context.Context, *model.Cargo) error
 	GetCargoByID(context.Context, int64) (*model.Cargo, error)
+	UpdateCargo(context.Context, *model.Cargo) error
+	DeleteCargo(context.Context, int64) error
 }
 
 type Storage struct {
