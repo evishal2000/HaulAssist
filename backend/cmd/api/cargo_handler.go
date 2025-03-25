@@ -123,6 +123,7 @@ func (app *Application) GetCargoByIDHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(cargo)
 }
 

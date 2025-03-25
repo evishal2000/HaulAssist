@@ -12,7 +12,8 @@ type MockCargoRepository struct {
 }
 
 func (m *MockCargoRepository) Create(ctx context.Context, cargo *model.Cargo) error {
-	return nil
+	args := m.Called(ctx, cargo)
+	return args.Error(0)
 }
 
 func (m *MockCargoRepository) GetCargoByID(ctx context.Context, cargoId int64) (*model.Cargo, error) {
@@ -21,9 +22,11 @@ func (m *MockCargoRepository) GetCargoByID(ctx context.Context, cargoId int64) (
 }
 
 func (m *MockCargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
-	return nil
+	args := m.Called(ctx, cargo)
+	return args.Error(0)
 }
 
 func (m *MockCargoRepository) DeleteCargo(ctx context.Context, cargoId int64) error {
-	return nil
+	args := m.Called(ctx, cargoId)
+	return args.Error(0)
 }
