@@ -25,14 +25,18 @@ func TestCreateCargoHandler(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `	{
-						"name":"cupboards",
-						"type":"small",
-						"weight":10,
-						"length":5,
-						"width":3,
-						"height":2,
-						"cost_per_weight":0,
-						"user_id":3
+						"name":"furniture",
+						"vehicle_type":"large",
+						"pickup":{
+							"latitude": 29.6463212,
+							"longitude": -82.34778159999999
+						},
+						"dropoff":{
+							"latitude": 29.6205846,
+							"longitude": -82.3763855
+						},
+						"user_id":3,
+						"pickup_time":"2025-03-03T10:30:00Z"
 					}
 				`
 	req := httptest.NewRequest("POST", "/addCargo", bytes.NewBufferString(reqBody))
@@ -58,14 +62,18 @@ func TestUpdateCargoHandler(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `	{
-						"name":"cupboards",
-						"type":"small",
-						"weight":10,
-						"length":5,
-						"width":3,
-						"height":2,
-						"cost_per_weight":0,
-						"user_id":3
+						"name":"furniture",
+						"vehicle_type":"large",
+						"pickup":{
+							"latitude": 29.6463212,
+							"longitude": -82.34778159999999
+						},
+						"dropoff":{
+							"latitude": 29.6205846,
+							"longitude": -82.3763855
+						},
+						"user_id":3,
+						"pickup_time":"2025-03-03T10:30:00Z"
 					}
 				`
 	req := httptest.NewRequest("PUT", "/cargo", bytes.NewBufferString(reqBody))
