@@ -6,6 +6,7 @@ import (
 	"haulassist_backend/internal/model"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -18,27 +19,47 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 	// }
 
 	var req struct {
-		Name          string `json:"name"`
-		Type          string `json:"type"`
-		Weight        int    `json:"weight"`
-		Length        int    `json:"length"`
-		Width         int    `json:"width"`
-		Height        int    `json:"height"`
-		CostPerWeight int    `json:"cost_per_weight"`
-		UserID        int64  `json:"user_id"`
+		Name       string         `json:"name"`
+		Type       string         `json:"type"`
+		Weight     int            `json:"weight"`
+		Pickup     model.Location `json:"pickup"`
+		Dropoff    model.Location `json:"dropoff"`
+		Length     int            `json:"length"`
+		Width      int            `json:"width"`
+		Height     int            `json:"height"`
+		PickupTime time.Time      `json:"pickup_time"`
+		UserID     int64          `json:"user_id"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
 
+	// Check if Pickup & Dropoff locations are present
+	if req.Pickup.Latitude == 0 && req.Pickup.Longitude == 0 {
+		http.Error(w, "Pickup location is required", http.StatusBadRequest)
+		return
+	}
+	if req.Dropoff.Latitude == 0 && req.Dropoff.Longitude == 0 {
+		http.Error(w, "Dropoff location is required", http.StatusBadRequest)
+		return
+	}
+
+	// Check if Pickup Time is valid (not zero value)
+	if req.PickupTime.IsZero() {
+		http.Error(w, "Pickup time is required", http.StatusBadRequest)
+		return
+	}
+
 	cargo := &model.Cargo{
-		Name:          req.Name,
-		Type:          req.Type,
-		Weight:        req.Weight,
-		Length:        req.Length,
-		Width:         req.Width,
-		Height:        req.Height,
-		CostPerWeight: req.CostPerWeight,
-		UserID:        req.UserID,
+		Name:       req.Name,
+		Type:       req.Type,
+		Weight:     req.Weight,
+		Pickup:     req.Pickup,
+		Dropoff:    req.Dropoff,
+		Length:     req.Length,
+		Width:      req.Width,
+		Height:     req.Height,
+		UserID:     req.UserID,
+		PickupTime: req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
@@ -56,15 +77,17 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 
 func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		CargoID       int64  `json:"id"`
-		Name          string `json:"name"`
-		Type          string `json:"type"`
-		Weight        int    `json:"weight"`
-		Length        int    `json:"length"`
-		Width         int    `json:"width"`
-		Height        int    `json:"height"`
-		CostPerWeight int    `json:"cost_per_weight"`
-		UserID        int64  `json:"user_id"`
+		CargoID    int64          `json:"id"`
+		Name       string         `json:"name"`
+		Type       string         `json:"type"`
+		Weight     int            `json:"weight"`
+		Pickup     model.Location `json:"pickup"`
+		Dropoff    model.Location `json:"dropoff"`
+		Length     int            `json:"length"`
+		Width      int            `json:"width"`
+		Height     int            `json:"height"`
+		PickupTime time.Time      `json:"pickup_time"`
+		UserID     int64          `json:"user_id"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
@@ -76,16 +99,34 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	// Check if Pickup & Dropoff locations are present
+	if req.Pickup.Latitude == 0 && req.Pickup.Longitude == 0 {
+		http.Error(w, "Pickup location is required", http.StatusBadRequest)
+		return
+	}
+	if req.Dropoff.Latitude == 0 && req.Dropoff.Longitude == 0 {
+		http.Error(w, "Dropoff location is required", http.StatusBadRequest)
+		return
+	}
+
+	// Check if Pickup Time is valid (not zero value)
+	if req.PickupTime.IsZero() {
+		http.Error(w, "Pickup time is required", http.StatusBadRequest)
+		return
+	}
+
 	cargo := &model.Cargo{
-		CargoID:       cargoID,
-		Name:          req.Name,
-		Type:          req.Type,
-		Weight:        req.Weight,
-		Length:        req.Length,
-		Width:         req.Width,
-		Height:        req.Height,
-		CostPerWeight: req.CostPerWeight,
-		UserID:        req.UserID,
+		CargoID:    cargoID,
+		Name:       req.Name,
+		Type:       req.Type,
+		Weight:     req.Weight,
+		Pickup:     req.Pickup,
+		Dropoff:    req.Dropoff,
+		Length:     req.Length,
+		Width:      req.Width,
+		Height:     req.Height,
+		UserID:     req.UserID,
+		PickupTime: req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
