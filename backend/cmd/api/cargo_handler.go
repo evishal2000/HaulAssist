@@ -19,16 +19,12 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 	// }
 
 	var req struct {
-		Name       string         `json:"name"`
-		Type       string         `json:"type"`
-		Weight     int            `json:"weight"`
-		Pickup     model.Location `json:"pickup"`
-		Dropoff    model.Location `json:"dropoff"`
-		Length     int            `json:"length"`
-		Width      int            `json:"width"`
-		Height     int            `json:"height"`
-		PickupTime time.Time      `json:"pickup_time"`
-		UserID     int64          `json:"user_id"`
+		Name        string         `json:"name"`
+		VehicleType string         `json:"vehicle_type"`
+		Pickup      model.Location `json:"pickup"`
+		Dropoff     model.Location `json:"dropoff"`
+		PickupTime  time.Time      `json:"pickup_time"`
+		UserID      int64          `json:"user_id"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
@@ -50,16 +46,12 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	cargo := &model.Cargo{
-		Name:       req.Name,
-		Type:       req.Type,
-		Weight:     req.Weight,
-		Pickup:     req.Pickup,
-		Dropoff:    req.Dropoff,
-		Length:     req.Length,
-		Width:      req.Width,
-		Height:     req.Height,
-		UserID:     req.UserID,
-		PickupTime: req.PickupTime,
+		Name:        req.Name,
+		VehicleType: req.VehicleType,
+		Pickup:      req.Pickup,
+		Dropoff:     req.Dropoff,
+		UserID:      req.UserID,
+		PickupTime:  req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
@@ -77,17 +69,13 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 
 func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		CargoID    int64          `json:"id"`
-		Name       string         `json:"name"`
-		Type       string         `json:"type"`
-		Weight     int            `json:"weight"`
-		Pickup     model.Location `json:"pickup"`
-		Dropoff    model.Location `json:"dropoff"`
-		Length     int            `json:"length"`
-		Width      int            `json:"width"`
-		Height     int            `json:"height"`
-		PickupTime time.Time      `json:"pickup_time"`
-		UserID     int64          `json:"user_id"`
+		CargoID     int64          `json:"id"`
+		Name        string         `json:"name"`
+		VehicleType string         `json:"vehicle_type"`
+		Pickup      model.Location `json:"pickup"`
+		Dropoff     model.Location `json:"dropoff"`
+		PickupTime  time.Time      `json:"pickup_time"`
+		UserID      int64          `json:"user_id"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
@@ -116,17 +104,13 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	cargo := &model.Cargo{
-		CargoID:    cargoID,
-		Name:       req.Name,
-		Type:       req.Type,
-		Weight:     req.Weight,
-		Pickup:     req.Pickup,
-		Dropoff:    req.Dropoff,
-		Length:     req.Length,
-		Width:      req.Width,
-		Height:     req.Height,
-		UserID:     req.UserID,
-		PickupTime: req.PickupTime,
+		CargoID:     cargoID,
+		Name:        req.Name,
+		VehicleType: req.VehicleType,
+		Pickup:      req.Pickup,
+		Dropoff:     req.Dropoff,
+		UserID:      req.UserID,
+		PickupTime:  req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
