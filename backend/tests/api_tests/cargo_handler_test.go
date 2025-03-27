@@ -17,6 +17,17 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+var UserContextKey = api.ContextKey("user")
+
+func MockAuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Inject mock claims into the context (bypassing actual token verification)
+		mockClaims := &api.Claims{UserID: 123, Email: "admin@gmail.com"}
+		ctx := context.WithValue(r.Context(), UserContextKey, mockClaims)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 func TestCreateCargoHandler(t *testing.T) {
 
 	mockRepo := &mocks.MockRepository{}
@@ -25,24 +36,33 @@ func TestCreateCargoHandler(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `	{
-						"name":"cupboards",
-						"type":"small",
-						"weight":10,
-						"length":5,
-						"width":3,
-						"height":2,
-						"cost_per_weight":0,
-						"user_id":3
+						"name":"furniture",
+						"vehicle_type":"large",
+						"pickup":{
+							"latitude": 29.6463212,
+							"longitude": -82.34778159999999
+						},
+						"dropoff":{
+							"latitude": 29.6205846,
+							"longitude": -82.3763855	
+						},
+						"user_id":3,
+						"pickup_time":"2025-03-03T10:30:00Z"
 					}
 				`
 	req := httptest.NewRequest("POST", "/addCargo", bytes.NewBufferString(reqBody))
 	req.Header.Set("Content-Type", "application/json")
+
 	w := httptest.NewRecorder()
 
 	mockCargoStore := mockStore.Cargo.(*mocks.MockCargoRepository)
 
 	mockCargoStore.On("Create", mock.Anything, mock.AnythingOfType("*model.Cargo")).Return(nil)
-	app.CreateCargoHandler(w, req)
+
+	router := chi.NewRouter()
+	router.Use(MockAuthMiddleware) // Use the mock middleware
+	router.Post("/addCargo", app.CreateCargoHandler)
+	router.ServeHTTP(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()
@@ -58,14 +78,18 @@ func TestUpdateCargoHandler(t *testing.T) {
 	app := &api.Application{Store: mockStore}
 
 	reqBody := `	{
-						"name":"cupboards",
-						"type":"small",
-						"weight":10,
-						"length":5,
-						"width":3,
-						"height":2,
-						"cost_per_weight":0,
-						"user_id":3
+						"name":"furniture",
+						"vehicle_type":"large",
+						"pickup":{
+							"latitude": 29.6463212,
+							"longitude": -82.34778159999999
+						},
+						"dropoff":{
+							"latitude": 29.6205846,
+							"longitude": -82.3763855
+						},
+						"user_id":3,
+						"pickup_time":"2025-03-03T10:30:00Z"
 					}
 				`
 	req := httptest.NewRequest("PUT", "/cargo", bytes.NewBufferString(reqBody))
@@ -80,7 +104,11 @@ func TestUpdateCargoHandler(t *testing.T) {
 	mockCargoStore := mockStore.Cargo.(*mocks.MockCargoRepository)
 
 	mockCargoStore.On("UpdateCargo", mock.Anything, mock.AnythingOfType("*model.Cargo")).Return(nil)
-	app.UpdateCargoHandler(w, req)
+
+	router := chi.NewRouter()
+	router.Use(MockAuthMiddleware) // Use the mock middleware
+	router.Put("/cargo", app.UpdateCargoHandler)
+	router.ServeHTTP(w, req)
 
 	resp := w.Result()
 	defer resp.Body.Close()

@@ -12,11 +12,11 @@ import (
 )
 
 func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Request) {
-	// claims, ok := r.Context().Value(UserContextKey).(*Claims)
-	// if !ok {
-	// 	http.Error(w, "Unauthorized", http.StatusUnauthorized)
-	// 	return
-	// }
+	claims, ok := r.Context().Value(UserContextKey).(*Claims)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 
 	var req struct {
 		Name        string         `json:"name"`
@@ -50,7 +50,7 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 		VehicleType: req.VehicleType,
 		Pickup:      req.Pickup,
 		Dropoff:     req.Dropoff,
-		UserID:      req.UserID,
+		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
@@ -68,6 +68,12 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Request) {
+	claims, ok := r.Context().Value(UserContextKey).(*Claims)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	var req struct {
 		CargoID     int64          `json:"id"`
 		Name        string         `json:"name"`
@@ -109,7 +115,7 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 		VehicleType: req.VehicleType,
 		Pickup:      req.Pickup,
 		Dropoff:     req.Dropoff,
-		UserID:      req.UserID,
+		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
 		// UserID:        claims.UserID, //taking user id from claims for now
 	}
