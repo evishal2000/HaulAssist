@@ -20,9 +20,12 @@ func Create(db *sql.DB) *CargoRepository {
 func (u *CargoRepository) Create(ctx context.Context, cargo *model.Cargo) error {
 
 	query := `
-		INSERT INTO cargo (user_id, name, type, weight, length, width, height, cost_per_weight)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING cargo_id, created_at, updated_at
+		INSERT INTO cargo (user_id, name, type, weight, pickup, dropoff, length, width, height, pickup_time)
+		VALUES ($1, $2, $3, $4, ST_GeogFromText($5), ST_GeogFromText($6), $7, $8, $9, $10) RETURNING cargo_id, created_at, updated_at
 	`
+
+	pickup := fmt.Sprintf("SRID=4326;POINT(%f %f)", cargo.Pickup.Longitude, cargo.Pickup.Latitude)
+	dropoff := fmt.Sprintf("SRID=4326;POINT(%f %f)", cargo.Dropoff.Longitude, cargo.Dropoff.Latitude)
 
 	err := u.db.QueryRowContext(
 		ctx,
@@ -31,10 +34,12 @@ func (u *CargoRepository) Create(ctx context.Context, cargo *model.Cargo) error 
 		cargo.Name,
 		cargo.Type,
 		cargo.Weight,
+		pickup,
+		dropoff,
 		cargo.Length,
 		cargo.Width,
 		cargo.Height,
-		cargo.CostPerWeight,
+		cargo.PickupTime,
 	).Scan(
 		&cargo.CargoID,
 		&cargo.CreatedAt,
@@ -50,11 +55,11 @@ func (u *CargoRepository) Create(ctx context.Context, cargo *model.Cargo) error 
 
 // GetCargoByID retrieves a cargo by its ID
 func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Cargo, error) {
-	query := "SELECT cargo_id, user_id, name, type, weight, length, width, height, cost_per_weight, created_at, updated_at FROM cargo WHERE cargo_id = $1"
+	query := "SELECT cargo_id, user_id, name, type, weight, ST_X(pickup::geometry), ST_Y(pickup::geometry), ST_X(dropoff::geometry), ST_Y(dropoff::geometry), length, width, height, pickup_time, created_at, updated_at FROM cargo WHERE cargo_id = $1"
 	row := r.db.QueryRowContext(ctx, query, id)
 
 	var cargo model.Cargo
-	if err := row.Scan(&cargo.CargoID, &cargo.UserID, &cargo.Name, &cargo.Type, &cargo.Weight, &cargo.Length, &cargo.Width, &cargo.Height, &cargo.CostPerWeight, &cargo.CreatedAt, &cargo.UpdatedAt); err != nil {
+	if err := row.Scan(&cargo.CargoID, &cargo.UserID, &cargo.Name, &cargo.Type, &cargo.Weight, &cargo.Pickup.Longitude, &cargo.Pickup.Latitude, &cargo.Dropoff.Longitude, &cargo.Dropoff.Latitude, &cargo.Length, &cargo.Width, &cargo.Height, &cargo.PickupTime, &cargo.CreatedAt, &cargo.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("cargo not found")
 		}
@@ -66,9 +71,12 @@ func (r *CargoRepository) GetCargoByID(ctx context.Context, id int64) (*model.Ca
 
 // UpdateCargo updates an existing cargo in the database
 func (r *CargoRepository) UpdateCargo(ctx context.Context, cargo *model.Cargo) error {
-	query := "UPDATE cargo SET name = $1, type = $2, weight = $3, length = $4, width = $5, height = $6, cost_per_weight = $7 WHERE cargo_id = $8 RETURNING cargo_id"
+	query := "UPDATE cargo SET name = $1, type = $2, weight = $3, pickup = ST_GeogFromText($4), dropoff = ST_GeogFromText($5), length = $6, width = $7, height = $8, pickup_time = $9 WHERE cargo_id = $10 RETURNING cargo_id"
 
-	row := r.db.QueryRowContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, cargo.Length, cargo.Width, cargo.Height, cargo.CostPerWeight, cargo.CargoID)
+	pickup := fmt.Sprintf("SRID=4326;POINT(%f %f)", cargo.Pickup.Longitude, cargo.Pickup.Latitude)
+	dropoff := fmt.Sprintf("SRID=4326;POINT(%f %f)", cargo.Dropoff.Longitude, cargo.Dropoff.Latitude)
+
+	row := r.db.QueryRowContext(ctx, query, cargo.Name, cargo.Type, cargo.Weight, pickup, dropoff, cargo.Length, cargo.Width, cargo.Height, cargo.PickupTime, cargo.CargoID)
 	var updatedCargo model.Cargo
 	if err := row.Scan(&updatedCargo.CargoID); err != nil {
 		if err == sql.ErrNoRows {
