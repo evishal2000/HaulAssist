@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"haulassist_backend/internal/helper"
 	"haulassist_backend/internal/model"
 	"net/http"
 	"strconv"
@@ -146,4 +147,33 @@ func (app *Application) DeleteCargoByIDHandler(w http.ResponseWriter, r *http.Re
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (app *Application) GetCargoCostHandler(w http.ResponseWriter, r *http.Request) {
+	// claims, ok := r.Context().Value(UserContextKey).(*Claims)
+	// if !ok {
+	// 	http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	// 	return
+	// }
+
+	cargoIDStr := chi.URLParam(r, "cargo_id")
+	cargoID, err := strconv.ParseInt(cargoIDStr, 10, 64)
+
+	if err != nil {
+		http.Error(w, "Invalid cargo ID", http.StatusBadRequest)
+		return
+	}
+
+	ctx := r.Context()
+	cargo, err := app.Store.Cargo.GetCargoByID(ctx, cargoID)
+
+	if err != nil {
+		http.Error(w, "Error fetching cargo "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	cost := helper.CalculateCost(cargo)
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(cost)
 }
