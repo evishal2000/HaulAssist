@@ -52,7 +52,6 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff:     req.Dropoff,
 		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
-		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
 	ctx := r.Context()
@@ -117,7 +116,6 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff:     req.Dropoff,
 		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
-		// UserID:        claims.UserID, //taking user id from claims for now
 	}
 
 	ctx := r.Context()
