@@ -1,6 +1,9 @@
 package helper
 
-import "haulassist_backend/internal/model"
+import (
+	"haulassist_backend/internal/model"
+	"haulassist_backend/internal/service"
+)
 
 // CargoType multipliers
 const (
@@ -39,10 +42,16 @@ func CalculateCost(c *model.Cargo) float64 {
 	// Determine time surge multiplier
 	timeSurge := RegularTime
 
+	distance, err := service.GetDistance(c.Pickup.Latitude, c.Pickup.Longitude, c.Dropoff.Latitude, c.Dropoff.Longitude)
+
+	if err != nil {
+		return 0.0
+	}
 	//after adding pickup time in cargo, handle peak hours, assign peak time to timeSurge if its the case
 
 	// Compute cost //after adding pickup and drop locations, handle distance (c.Distance * DistanceRate)
-	cost := BaseCost + (10 * DistanceRate) //10 miles
+	distance = distance / 1609.34                //convert meters to miles
+	cost := BaseCost + (distance * DistanceRate) //10 miles
 	cost *= typeMultiplier * timeSurge
 
 	return cost
