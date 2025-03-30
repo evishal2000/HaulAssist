@@ -1,7 +1,10 @@
 import React from "react";
 import "./styles.css";
+ import { authState } from "../Auth/authState";
+import { useRecoilValue } from "recoil";
 
 export const About = () => {
+  // const auth = useRecoilValue(authState);
   return (
     <div className="about-page">
       {/* Hero Section */}

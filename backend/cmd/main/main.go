@@ -16,7 +16,7 @@ func main() {
 	// Load environment variables
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatalf("Error loading .env file:  %v", err)
 	}
 
 	// Configure the application
