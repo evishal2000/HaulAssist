@@ -15,9 +15,11 @@ export const Login = () => {
   const [userDetails, setUserDetails] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
-  const { login } = useAuth();
+  
+
   const axios = useAxios();
   const setAuthState = useSetRecoilState(authState);
+  
   const handleLogin = async () => {
     try {
       const response = await axios.post('/v1/login', {
@@ -27,10 +29,9 @@ export const Login = () => {
        console.log(response);
 
       const { token, user } = response.data; 
-
+     console.log(token);
       // Update Recoil state
       setAuthState({ user, token });
-
       api.success({
         message: 'Login Successful',
         description: 'You have successfully logged in.',

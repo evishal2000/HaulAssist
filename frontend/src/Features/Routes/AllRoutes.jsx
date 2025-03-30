@@ -5,6 +5,7 @@ import { About } from "../About";
 import LandingPage from "../LandingPage";
 import { RegistrationForm } from "../Auth/RegistrationForm";
 import { Dashboard } from "../Dashboard";
+import { BookingForm } from "../Dashboard/BookingForm";
 
 export const RouterWrapper = () => {
     return (
@@ -16,6 +17,7 @@ export const RouterWrapper = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegistrationForm/>} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/booking-form" element={<BookingForm />}/>
       </Routes>
     );
   };
