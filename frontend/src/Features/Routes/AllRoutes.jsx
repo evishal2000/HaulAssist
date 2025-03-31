@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import {Login} from "../Auth/Login";
-import { Features } from "../Features";
+import Features from "../Features";
 import { About } from "../About";
 import LandingPage from "../LandingPage";
 import { RegistrationForm } from "../Auth/RegistrationForm";
