@@ -74,7 +74,7 @@ func (app *Application) GetCargoCostByModelHandler(w http.ResponseWriter, r *htt
 		Pickup      model.Location `json:"pickup"`
 		Dropoff     model.Location `json:"dropoff"`
 		PickupTime  time.Time      `json:"pickup_time"`
-		// UserID      int64          `json:"user_id"`
+		// UserID      int64       `json:"user_id"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
