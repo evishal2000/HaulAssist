@@ -6,6 +6,8 @@ import LandingPage from "../LandingPage";
 import { RegistrationForm } from "../Auth/RegistrationForm";
 import { Dashboard } from "../Dashboard";
 import { BookingForm } from "../Dashboard/BookingForm";
+import {ProtectedRoute} from "./ProtectedRoute";
+import { Bookings } from "../Bookings/Bookings";
 
 export const RouterWrapper = () => {
     return (
@@ -16,8 +18,10 @@ export const RouterWrapper = () => {
         <Route path="/features" element={<Features />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegistrationForm/>} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/booking-form" element={<BookingForm />}/>
+        <Route path="/dashboard" element={ <ProtectedRoute>
+          <Dashboard /> </ProtectedRoute>} />
+        <Route path="/booking-form" element={<ProtectedRoute><BookingForm /></ProtectedRoute>}/>
+        <Route path="/bookings" element={<ProtectedRoute><Bookings /></ProtectedRoute>}/>
       </Routes>
     );
   };

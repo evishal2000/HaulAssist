@@ -3,39 +3,38 @@ import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import logo from "../../Images/HaulAssist.png";
  import { authState } from "../../Features/Auth/authState";
-import { useRecoilValue } from "recoil";
-
-export const PageLinks = [
-  {
-    key: "1",
-    label: "Home",
-    target:"/",
-  },
-  {
-    key: "2",
-    label:  "About",
-    target:"/about",
-  },
-  {
-    key: "3",
-    label:  "Features",
-    target:"/features",
-  },
-  {
-    key: "4",
-    label: "Login",
-    target:"/login",
-  },
-];
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export const Navbar = () => {
   const { Header } = Layout;
   const navigate = useNavigate();
-  // const user=authState();
-  // console.log(user);
+  const user = useRecoilValue(authState); 
+  const setAuthState = useSetRecoilState(authState);  
+
+const PageLinks = [
+  { key: "1", label: user?.token ? "Dashboard" : "Home", target: user?.token ? "/dashboard" : "/" },
+  { key: "2", label: "About", target: "/about" },
+  { key: "3", label: "Features", target: "/features" },
+  ...(user?.token
+    ? [
+        { key: "4", label: "Bookings", target: "/bookings" },
+        { key: "5", label: "Logout", target: "/logout" },
+      ]
+    : [{ key: "6", label: "Login", target: "/login" }]),
+];
+
   const handleMenuClick = (e) => {
     const { target } = PageLinks.find((item) => item.key === e.key) || {};
-    if (target) navigate(target);
+    // if (target) navigate(target);
+    if (target) {
+      if (target === "/logout") {
+        // Handle logout by clearing authState
+        setAuthState({ user: null, token: null });  // Clear authState
+        navigate("/");  // Redirect to home after logout
+      } else {
+        navigate(target);
+      }
+    }
   };
   return (
     <Header className="navbar">
