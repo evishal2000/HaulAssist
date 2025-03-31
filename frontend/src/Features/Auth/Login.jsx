@@ -26,26 +26,37 @@ export const Login = () => {
         email: userDetails.email,
         password: userDetails.password,
       });
-       console.log(response);
-
-      const { token, user } = response.data; 
-     console.log(token);
-      // Update Recoil state
-      setAuthState({ user, token });
-      api.success({
-        message: 'Login Successful',
-        description: 'You have successfully logged in.',
-      });
-      //naviagtion here
-    } catch (error) {
-      api.error({
-        message: 'Login Failed',
-        description: error.response?.data?.message || 'An error occurred during login.',
-      });
-    }
-    navigate("/dashboard");
-  };
-
+      if(response.status!==200){
+        api.error({
+          message: 'Login Failed',
+          description: 'Invalid response from the server.',
+        });
+        }
+        else {
+           console.log(response.status);
+           const { token, message } = response.data;
+           // Update Recoil state
+          const user=userDetails.email;
+          setAuthState({ user, token });
+  
+          // Show success notification with backend message if available
+          api.success({
+          message: 'Login Successful',
+          description: message || 'You have successfully logged in.',
+           });
+  
+        navigate("/dashboard");
+        }}
+      catch (error) {
+        console.log("In catch block");
+        console.error('Login error:', error);
+        const errorMessage = error.response?.data?.message || 'Invalid email or password.';
+        api.error({
+          message: 'Login Failed',
+          description: errorMessage,
+        });
+      }}; 
+  
 
  const onValuesChange = (changedValues, allValues) => {
   console.log("Form values changed:", allValues);
@@ -53,6 +64,8 @@ export const Login = () => {
 };
 
   return (
+    <>
+    {contextHolder}
     <Flex style={{ width: "100%", marginTop: "10%" }} justify="center" align="center" vertical>
       <Title level={2}>Login</Title>
       <Form form={form} autoComplete="off" style={{ width: "100%" }} className="login-form" onValuesChange={onValuesChange}>
@@ -80,5 +93,6 @@ export const Login = () => {
         New user? <span className="register-link" onClick={() => navigate("/register")} style={{ color: "#1890ff", cursor: "pointer" }}>Register</span>
       </Typography.Text>
     </Flex>
+    </>
   );
 };
