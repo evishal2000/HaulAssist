@@ -21,14 +21,6 @@ const Features = () => {
 
         <div className="feature-card">
           <div className="feature-icon">
-            <i className="fas fa-user-check"></i>
-          </div>
-          <h3>Verified Service Providers</h3>
-          <p>All our service providers undergo thorough background checks to ensure reliability and trustworthiness.</p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">
             <i className="fas fa-clock"></i>
           </div>
           <h3>On-Demand Scheduling</h3>
