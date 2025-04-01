@@ -240,3 +240,24 @@ func (app *Application) GetCargoCostByIdHandler(w http.ResponseWriter, r *http.R
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(cost)
 }
+
+func (app *Application) GetBookingsHandler(w http.ResponseWriter, r *http.Request) {
+	claims, ok := r.Context().Value(UserContextKey).(*Claims)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	sortBy := chi.URLParam(r, "sort_by")
+
+	ctx := r.Context()
+	cargos, err := app.Store.Cargo.GetBookings(ctx, claims.UserID, sortBy)
+
+	if err != nil {
+		http.Error(w, "Error fetching cargo bookings "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(cargos)
+}

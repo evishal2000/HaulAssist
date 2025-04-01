@@ -60,6 +60,7 @@ func (app *Application) Mount() http.Handler {
 			r.Delete("/{cargo_id}", app.DeleteCargoByIDHandler)
 			r.Get("/cost/{cargo_id}", app.GetCargoCostByIdHandler)
 			r.Post("/cost", app.GetCargoCostByModelHandler)
+			r.Get("/bookings", app.GetBookingsHandler)
 		})
 	})
 

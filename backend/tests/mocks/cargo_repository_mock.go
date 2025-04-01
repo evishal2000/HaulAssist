@@ -30,3 +30,8 @@ func (m *MockCargoRepository) DeleteCargo(ctx context.Context, cargoId int64) er
 	args := m.Called(ctx, cargoId)
 	return args.Error(0)
 }
+
+func (m *MockCargoRepository) GetBookings(ctx context.Context, userID int64, sortBy string) ([]*model.Cargo, error) {
+	args := m.Called(ctx, userID, sortBy)
+	return args.Get(0).([]*model.Cargo), args.Error(1)
+}

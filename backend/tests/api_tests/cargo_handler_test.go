@@ -167,3 +167,31 @@ func TestDeleteCargoByIDHandler(t *testing.T) {
 	defer resp.Body.Close()
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
+
+func TestGetBookingsHandler(t *testing.T) {
+	mockRepo := &mocks.MockRepository{}
+	mockStore := mockRepo.GetMockStore()
+	app := &api.Application{Store: mockStore}
+
+	req := httptest.NewRequest("GET", "/bookings", nil)
+	ctx := chi.NewRouteContext()
+	ctx.URLParams.Add("sort_by", "created_at_asc")
+	req = req.WithContext(context.WithValue(req.Context(), chi.RouteCtxKey, ctx))
+	// Add mock claims to the context
+	mockClaims := &api.Claims{UserID: 3, Email: "test@example.com"}
+	req = req.WithContext(context.WithValue(req.Context(), api.UserContextKey, mockClaims))
+
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	mockCargoStore := mockStore.Cargo.(*mocks.MockCargoRepository)
+	mockCargoStore.On("GetBookings", mock.Anything, int64(3), "created_at_asc").Return([]*model.Cargo{}, nil)
+
+	router := chi.NewRouter()
+	router.Get("/bookings", app.GetBookingsHandler)
+	router.ServeHTTP(w, req)
+
+	resp := w.Result()
+	defer resp.Body.Close()
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+}

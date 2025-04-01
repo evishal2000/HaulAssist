@@ -90,3 +90,34 @@ func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
 	_, err := r.db.ExecContext(ctx, query, id)
 	return err
 }
+
+// GetBookings retrieves all cargo entries for a user
+func (r *CargoRepository) GetBookings(ctx context.Context, userID int64, sortBy string) ([]*model.Cargo, error) {
+	query := "SELECT cargo_id, user_id, name, vehicle_type, ST_X(pickup::geometry), ST_Y(pickup::geometry), ST_X(dropoff::geometry), ST_Y(dropoff::geometry), pickup_time, created_at, updated_at FROM cargo WHERE user_id = $1"
+	if sortBy == "created_at_asc" {
+		query += " ORDER BY pickup_time ASC"
+	} else if sortBy == "created_at_desc" {
+		query += " ORDER BY pickup_time DESC"
+	}
+
+	rows, err := r.db.QueryContext(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cargos []*model.Cargo
+	for rows.Next() {
+		var cargo model.Cargo
+		if err := rows.Scan(&cargo.CargoID, &cargo.UserID, &cargo.Name, &cargo.VehicleType, &cargo.Pickup.Longitude, &cargo.Pickup.Latitude, &cargo.Dropoff.Longitude, &cargo.Dropoff.Latitude, &cargo.PickupTime, &cargo.CreatedAt, &cargo.UpdatedAt); err != nil {
+			return nil, err
+		}
+		cargos = append(cargos, &cargo)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return cargos, nil
+}
