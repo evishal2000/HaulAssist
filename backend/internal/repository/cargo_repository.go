@@ -90,3 +90,29 @@ func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
 	_, err := r.db.ExecContext(ctx, query, id)
 	return err
 }
+
+// GetBookings retrieves all cargo entries for a user
+func (r *CargoRepository) GetBookings(ctx context.Context, userID int64, sortBy string) ([]*model.Cargo, error) {
+	query := "SELECT * FROM cargo WHERE user_id = $1"
+
+	rows, err := r.db.QueryContext(ctx, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var cargos []*model.Cargo
+	for rows.Next() {
+		var cargo model.Cargo
+		if err := rows.Scan(&cargo.CargoID, &cargo.UserID, &cargo.Name, &cargo.VehicleType, &cargo.Pickup.Longitude, &cargo.Pickup.Latitude, &cargo.Dropoff.Longitude, &cargo.Dropoff.Latitude, &cargo.PickupTime, &cargo.CreatedAt, &cargo.UpdatedAt); err != nil {
+			return nil, err
+		}
+		cargos = append(cargos, &cargo)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return cargos, nil
+}
