@@ -211,6 +211,7 @@ func (app *Application) GetBookingsHandler(w http.ResponseWriter, r *http.Reques
 
 	userIDStr := chi.URLParam(r, "user_id")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
+	sortBy := chi.URLParam(r, "sort_by")
 
 	if err != nil {
 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
@@ -218,7 +219,7 @@ func (app *Application) GetBookingsHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	ctx := r.Context()
-	cargos, err := app.Store.Cargo.GetBookings(ctx, userID)
+	cargos, err := app.Store.Cargo.GetBookings(ctx, userID, sortBy)
 
 	if err != nil {
 		http.Error(w, "Error fetching cargo bookings "+err.Error(), http.StatusInternalServerError)
