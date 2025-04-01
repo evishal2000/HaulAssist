@@ -208,18 +208,16 @@ func (app *Application) GetCargoCostHandler(w http.ResponseWriter, r *http.Reque
 }
 
 func (app *Application) GetBookingsHandler(w http.ResponseWriter, r *http.Request) {
-
-	userIDStr := chi.URLParam(r, "user_id")
-	userID, err := strconv.ParseInt(userIDStr, 10, 64)
-	sortBy := chi.URLParam(r, "sort_by")
-
-	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+	claims, ok := r.Context().Value(UserContextKey).(*Claims)
+	if !ok {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
+	sortBy := chi.URLParam(r, "sort_by")
+
 	ctx := r.Context()
-	cargos, err := app.Store.Cargo.GetBookings(ctx, userID, sortBy)
+	cargos, err := app.Store.Cargo.GetBookings(ctx, claims.UserID, sortBy)
 
 	if err != nil {
 		http.Error(w, "Error fetching cargo bookings "+err.Error(), http.StatusInternalServerError)
