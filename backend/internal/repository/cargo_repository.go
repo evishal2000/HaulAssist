@@ -93,7 +93,7 @@ func (r *CargoRepository) DeleteCargo(ctx context.Context, id int64) error {
 
 // GetBookings retrieves all cargo entries for a user
 func (r *CargoRepository) GetBookings(ctx context.Context, userID int64, sortBy string) ([]*model.Cargo, error) {
-	query := "SELECT * FROM cargo WHERE user_id = $1"
+	query := "SELECT cargo_id, user_id, name, vehicle_type, ST_X(pickup::geometry), ST_Y(pickup::geometry), ST_X(dropoff::geometry), ST_Y(dropoff::geometry), pickup_time, created_at, updated_at FROM cargo WHERE user_id = $1"
 	if sortBy == "created_at_asc" {
 		query += " ORDER BY pickup_time ASC"
 	} else if sortBy == "created_at_desc" {
