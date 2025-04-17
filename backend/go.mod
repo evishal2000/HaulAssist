@@ -4,6 +4,8 @@ go 1.23.5
 
 require github.com/stretchr/testify v1.10.0
 
+require github.com/stripe/stripe-go/v78 v78.12.0 // indirect
+
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-chi/chi/v5 v5.2.0
