@@ -62,6 +62,7 @@ func (app *Application) Mount() http.Handler {
 			r.Post("/cost", app.GetCargoCostByModelHandler)
 			r.Get("/bookings", app.GetBookingsHandler)
 			r.Post("/paymentintent", app.CreatePaymentRequestIntentHandler)
+			r.Post("/payment/success", app.RecordSuccessfulPayment)
 		})
 	})
 

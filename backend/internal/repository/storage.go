@@ -19,14 +19,20 @@ type CargoInterface interface {
 	DeleteCargo(context.Context, int64) error
 }
 
+type PaymentInterface interface {
+	Create(context.Context, *model.Payment) error
+}
+
 type Storage struct {
-	Users UserInterface
-	Cargo CargoInterface
+	Users    UserInterface
+	Cargo    CargoInterface
+	Payments PaymentInterface
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
-		Users: &UserRepository{db},
-		Cargo: &CargoRepository{db},
+		Users:    &UserRepository{db},
+		Cargo:    &CargoRepository{db},
+		Payments: &PaymentRepository{db},
 	}
 }
