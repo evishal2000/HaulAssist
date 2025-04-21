@@ -9,7 +9,7 @@ import moment from 'moment';
 export const BookingForm = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cost, setCost] = useState(null);
+  const [cost, setCost] = useState(0);
   const navigate = useNavigate();
   const axios = useAxios();
 
@@ -207,7 +207,6 @@ export const BookingForm = () => {
         <Form.Item data-testid="submitButton">
           <Button
             type="primary"
-            htmlType="submit"
             onClick={handleSubmit}
             data-testid="submitButton1"
           >
@@ -230,7 +229,7 @@ export const BookingForm = () => {
           </Button>,
         ]}
       >
-        <p>Your estimated cost is: <strong>${cost}</strong></p>
+        <p>Your estimated cost is: <strong>${cost.toFixed(2)}</strong></p>
       </Modal>
     </div>
   );
