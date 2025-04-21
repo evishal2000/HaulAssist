@@ -46,7 +46,7 @@ describe('Authentication Tests', () => {
   it('should login successfully with valid credentials', () => {
     cy.intercept('POST', '/v1/register', { statusCode: 200, body: { token: 'fake-jwt-token' } }).as('loginRequest');
       cy.get('[data-testid="email-input"]').type('vishal@gmail.com');
-      cy.get('[data-testid="password-input"]').type('v');
+      cy.get('[data-testid="password-input"]').type('1234');
       cy.get('[data-testid="login-button"]').click();
       
       cy.url().should('include', '/dashboard');

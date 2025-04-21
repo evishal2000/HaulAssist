@@ -18,26 +18,6 @@ export const Bookings = () => {
         const response = await axios.get("http://localhost:8080/v1/cargo/bookings");
         const data = response.data;
 
-        // For now, mock backend response:
-        // const data = [
-        //   {
-        //     id: 12,
-        //     name: "Furniture",
-        //     vehicle_type: "medium",
-        //     pickup: {
-        //       latitude: 29.617956,
-        //       longitude: -82.376695,
-        //     },
-        //     dropoff: {
-        //       latitude: 29.617956,
-        //       longitude: -82.376695,
-        //     },
-        //     user_id: 4,
-        //     pickup_time: "2025-04-21T04:00:00Z",
-        //     created_at: "2025-04-21T12:34:36.611354Z",
-        //     updated_at: "2025-04-21T12:34:36.611354Z",
-        //   },
-        // ];
 
         const transformed = data.map((item) => ({
           key: item.id,
