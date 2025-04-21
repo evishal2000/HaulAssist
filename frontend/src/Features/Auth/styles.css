@@ -22,9 +22,9 @@
 
 @media(max-width:768px){
     .login-form-password{
-        max-width:60%;
+        max-width:50%;
     }
    .login-form-email{
-       max-width: 60%;
+       max-width: 90%;
    }
 }

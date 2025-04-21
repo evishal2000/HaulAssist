@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Typography,Table, message, Spin } from "antd";
-import axios from "axios";
+import { Typography, Table, message, Spin } from "antd";
+import { useAxios } from "../../Utils/axiosInstance";
+import moment from "moment";
 import "./Bookings.css";
 
 const { Title } = Typography;
@@ -8,33 +9,46 @@ const { Title } = Typography;
 export const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const axios=useAxios();
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        // Mock API request
-        // const response = await axios.get("https://your-api.com/bookings");
-        // setBookings(response.data);
         
-        // Mock data
-        setBookings([
-          {
-            key: "1",
-            pickup: "123 Main St, NY",
-            dropoff: "456 Elm St, NY",
-            vehicle: "Medium",
-            cost: "$100",
-            status: "Confirmed",
-          },
-          {
-            key: "2",
-            pickup: "789 Pine St, CA",
-            dropoff: "321 Oak St, CA",
-            vehicle: "Large",
-            cost: "$150",
-            status: "Pending",
-          },
-        ]);
+        const response = await axios.get("http://localhost:8080/v1/cargo/bookings");
+        const data = response.data;
+
+        // For now, mock backend response:
+        // const data = [
+        //   {
+        //     id: 12,
+        //     name: "Furniture",
+        //     vehicle_type: "medium",
+        //     pickup: {
+        //       latitude: 29.617956,
+        //       longitude: -82.376695,
+        //     },
+        //     dropoff: {
+        //       latitude: 29.617956,
+        //       longitude: -82.376695,
+        //     },
+        //     user_id: 4,
+        //     pickup_time: "2025-04-21T04:00:00Z",
+        //     created_at: "2025-04-21T12:34:36.611354Z",
+        //     updated_at: "2025-04-21T12:34:36.611354Z",
+        //   },
+        // ];
+
+        const transformed = data.map((item) => ({
+          key: item.id,
+          pickup: `Lat: ${item.pickup.latitude.toFixed(4)}, Lng: ${item.pickup.longitude.toFixed(4)}`,
+          dropoff: `Lat: ${item.dropoff.latitude.toFixed(4)}, Lng: ${item.dropoff.longitude.toFixed(4)}`,
+          vehicle: item.vehicle_type.charAt(0).toUpperCase() + item.vehicle_type.slice(1),
+          cost: "$100", // Placeholder, replace if you have real cost data
+          status: "Confirmed", // Placeholder, replace if backend provides this
+        }));
+
+        setBookings(transformed);
       } catch (error) {
         message.error("Failed to fetch bookings.");
       } finally {
@@ -75,9 +89,16 @@ export const Bookings = () => {
 
   return (
     <div className="bookings-container">
-       <Title level={2} className="bookings-title">Your Bookings</Title>
-      {loading ? <Spin size="large" className="loading-spinner" /> :   <div className="bookings-table-wrapper"><Table columns={columns} dataSource={bookings} className="bookings-table" />     </div>
-    }
+      <Title level={2} className="bookings-title">
+        Your Bookings
+      </Title>
+      {loading ? (
+        <Spin size="large" className="loading-spinner" />
+      ) : (
+        <div className="bookings-table-wrapper">
+          <Table columns={columns} dataSource={bookings} className="bookings-table" />
+        </div>
+      )}
     </div>
   );
 };
