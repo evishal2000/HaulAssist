@@ -5,6 +5,7 @@ import { usStates } from "./Utility/states";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../../Utils/axiosInstance";
 import moment from 'moment';
+import "./BookingForm.css";
 
 export const BookingForm = () => {
   const [form] = Form.useForm();
@@ -71,25 +72,23 @@ export const BookingForm = () => {
         "user_id": 3,
         "pickup_time": isoString
       };
-      const response = await axios.post("http://localhost:8080/v1/cargo/addCargo",data);
-      if(!response){
+      const response = await axios.post("http://localhost:8080/v1/cargo/addCargo", data);
+      if (!response) {
         message.error("Booking failed. Try again.");
-      }
-      else {
+      } else {
         navigate("/dashboard");
         message.success("Booking confirmed!");
         setIsModalOpen(false);
       }
-     
     } catch (error) {
       message.error("Booking failed. Try again.");
     }
   };
 
   return (
-    <div style={{ padding: "20px", width: "60%" }}>
+    <div className="booking-form-container">
       <Form form={form} layout="vertical">
-        <div style={{ display: "flex", justifyContent: "space-between" }} className="form-address">
+        <div className="form-address">
           <div className="form-side">
             <h3>Pickup Address</h3>
             <Form.Item
