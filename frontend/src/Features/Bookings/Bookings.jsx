@@ -76,7 +76,8 @@ export const Bookings = () => {
   return (
     <div className="bookings-container">
        <Title level={2} className="bookings-title">Your Bookings</Title>
-      {loading ? <Spin size="large" className="loading-spinner" /> : <Table columns={columns} dataSource={bookings} className="bookings-table" />}
+      {loading ? <Spin size="large" className="loading-spinner" /> :   <div className="bookings-table-wrapper"><Table columns={columns} dataSource={bookings} className="bookings-table" />     </div>
+    }
     </div>
   );
 };

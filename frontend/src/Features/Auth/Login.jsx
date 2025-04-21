@@ -74,8 +74,7 @@ export const Login = () => {
           placeholder="Email"
           onChange={(value) => setUserDetails((prev) => ({ ...prev, email: value }))}
           value={userDetails.email}
-
-          widthSize="small"
+          className="login-form-email"
         />
   
         <Input.Password
@@ -90,7 +89,7 @@ export const Login = () => {
         </StyledButton>
       </Form>
       <Typography.Text>
-        New user? <span className="register-link" onClick={() => navigate("/register")} style={{ color: "#1890ff", cursor: "pointer" }}>Register</span>
+        New user? <span className="register-link" onClick={() => navigate("/register")} style={{ color: "rgb(79, 163, 232);", cursor: "pointer" }}>Register</span>
       </Typography.Text>
     </Flex>
     </>

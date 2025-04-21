@@ -60,8 +60,8 @@ export const BookingForm = () => {
   return (
     <div style={{ padding: "20px", width: "60%" }}>
       <Form form={form} layout="vertical">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ width: "48%" }}>
+        <div style={{ display: "flex", justifyContent: "space-between" }} className="form-address">
+          <div className="form-side">
             <h3>Pickup Address</h3>
             <Form.Item 
               name="pickupStreet" 
@@ -96,7 +96,7 @@ export const BookingForm = () => {
               <Input placeholder="Enter zip code" data-testid="pickupZip-input" />
             </Form.Item>
           </div>
-          <div style={{ width: "48%" }}>
+          <div className="form-side">
             <h3>Dropoff Address</h3>
             <Form.Item 
               name="dropoffStreet" 

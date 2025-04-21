@@ -55,4 +55,20 @@
   .dashboard-button:hover {
     background-color: #40a9ff;
   }
+  .form-side{
+    width:48%;
+  }
   
+  @media(max-width:768px){
+    .dashboard-content{flex-direction: column;}
+    .dashboard-card{
+      width:100%;
+    }
+    .form-address{
+      flex-direction: column;
+    }
+
+    .form-side{
+      width:100%;
+    }
+  }
