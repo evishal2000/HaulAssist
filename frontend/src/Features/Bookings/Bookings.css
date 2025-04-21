@@ -18,10 +18,30 @@
     display: block;
     margin: 20px auto;
   }
+  .bookings-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
   
   .bookings-table {
     background-color: white;
     border-radius: 8px;
     padding: 10px;
+    min-width: 600px; 
   }
   
+  @media (max-width: 768px) {
+    .bookings-container {
+      width: 95%;
+      padding: 10px;
+    }
+  
+    .bookings-title {
+      font-size: 20px;
+    }
+  
+    .bookings-table {
+      padding: 5px;
+      font-size: 14px;
+    }
+  }

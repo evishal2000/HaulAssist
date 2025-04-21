@@ -10,8 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 1.5rem;
-  background: linear-gradient(to right, #2563eb, #1e40af);
+  padding: 1rem 1.5rem;
   color: #fff;
 }
 
@@ -20,6 +19,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  color:rgb(24, 24, 24)
 }
 
 .hero-text {
@@ -48,26 +48,27 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 10px;
 }
 
 .btn-primary {
-  background-color: #fff;
-  color: #2563eb;
+  background-color: rgb(79, 163, 232);
+  color: white;
 }
 
 .btn-primary:hover {
-  background-color: #f0f0f0;
+  background-color: rgb(12, 118, 205);
 }
 
 .btn-secondary {
   background-color: transparent;
-  border: 2px solid #fff;
-  color: #fff;
+  border: 2px solid #8f8c8c;
+  color: #8fadee;
 }
 
 .btn-secondary:hover {
   background-color: #fff;
-  color: #2563eb;
+  color: #8fadee;
 }
 
 /* Animation Styling */
@@ -77,8 +78,7 @@
 
   /* Services Section */
   .services-section {
-    padding: 4rem 1.5rem;
-    background-color: #f9f9f9;
+    padding: 1rem 1.5rem;
     text-align: center;
   }
   
@@ -99,10 +99,13 @@
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
   }
   
   .service-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12x 16px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1); 
   }
   
   .service-card .icon {
@@ -119,3 +122,14 @@
     color: #666;
   }
   
+  @media(max-width:768px){
+    .hero-content{
+      flex-direction: column;
+    }
+    .hero-text {
+      max-width: 100%;
+    }
+    .hero-text h1{
+      font-size: 48px;
+    }
+  }

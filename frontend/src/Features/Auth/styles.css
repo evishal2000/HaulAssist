@@ -11,7 +11,20 @@
 
 .login-form-password {
     
-    width: 30%;
+    max-width: 30%;
     height: 48px;
     margin: 10px;
+}
+
+.login-form-email{
+    max-width: 30%;
+}
+
+@media(max-width:768px){
+    .login-form-password{
+        max-width:60%;
+    }
+   .login-form-email{
+       max-width: 60%;
+   }
 }

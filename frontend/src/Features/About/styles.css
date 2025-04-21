@@ -9,8 +9,7 @@
   .about-hero {
     text-align: center;
     padding: 4rem 1rem;
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: white;
+    color:rgb(24, 24, 24);
   }
   
   .about-hero h1 {
