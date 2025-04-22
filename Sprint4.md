@@ -232,3 +232,37 @@ This endpoint fetches all cargo bookings for the authenticated user
   - 200: Success
   - 401: Unauthorized
   - 500: Internal Server Error
+
+## v1/cargo/paymentintent POST
+This endpoint generates the client_secret and payment_id for stripe
+- Authorization: access_token
+- Request Body: JSON object
+  ```json
+  {
+    "cargo_id": 11,
+    "amount": 279.90
+  }
+  ```
+- Response: JSON object with client_secret and payment_id
+- Status Codes:
+  - 200: Success
+  - 400: Bad Request (missing required fields)
+  - 500: Internal Server Error
+
+## v1/cargo/payment/success POST
+This endpoint saves the payment details in the db
+- Authorization: access token
+- Request Body: JSON object
+  ```json
+  {
+    "cargo_id": 11,
+    "amount": 249.90,
+    "payment_intent_id": "pi_3RF65yFYrIA6vH1K1yiCoB25",
+    "status": "success"
+  }
+  ```
+- Response: JSON object with payment details
+- Status Codes:
+  - 200: Success
+  - 400: Bad Request (missing required fields)
+  - 500: Internal Server Error
