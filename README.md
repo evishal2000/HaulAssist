@@ -25,7 +25,7 @@
 | Database     | Supabase (PostgreSQL) |
 | Auth         | JWT               |
 | Dev Tools    | Air (Go Live Reload) |
-| Testing      | Go + Testify      |
+| Testing      | Go + Testify ,Cypress    |
 
 ---
 
@@ -103,8 +103,18 @@ Tests cover:
 
 ---
 
-## Project Structure
+Run unit tests for frontend components:
+```bash
+npx cypress open 
+```
+or
 
+```bash
+npx cypress run 
+```
+
+## Project Structure
+Backend:
 ```
 /cmd/api            # Server startup & routing
 /internal
@@ -116,7 +126,51 @@ Tests cover:
 /tests              # Unit tests
 ```
 
+Frontend:
+
+HAULASSIST/
+│
+├── backend/                # Backend server code (not expanded here)
+│
+├── frontend/               # Frontend React application
+│   ├── cypress/            # End-to-end tests with Cypress
+│   ├── node_modules/       # Installed npm dependencies
+│   ├── public/             # Static assets (HTML, images, etc.)
+│   └── src/                # Main source code for the React app
+│       ├── Animations/     # Animation utilities or components
+│       ├── Components/     # Reusable UI components
+│       │   ├── ErrorBoundary/
+│       │   ├── Navbar/
+│       │   ├── StyledButton/
+│       │   └── TextInputBox/
+│       ├── Config/         # Configuration files/constants
+│       ├── Features/       # Feature-based modules
+│       │   ├── About/
+│       │   ├── Auth/
+│       │   ├── Bookings/
+│       │   ├── Dashboard/
+│       │   ├── Features/
+│       │   ├── LandingPage/
+│       │   └── Routes/
+│       ├── Images/         # Image assets
+│       └── Utils/          # Utility/helper functions
+│       ├── App.css         # App-level CSS
+│       ├── App.js          # Main App component
+│       ├── App.test.js     # App component tests
+│       ├── index.css       # Global CSS
+│       ├── index.js        # App entry point
+│       ├── reportWebVitals.js # Performance measuring
+│       └── setupTests.js   # Test setup
+│
+├── .env                    # Environment variables
+├── .gitignore              # Git ignore rules
+├── cypress.config.js       # Cypress configuration
+├── package-lock.json       # NPM lockfile
+├── package.json            # Project dependencies and scripts
+└── README.md               # Project documentation
+
 ---
+
 
 ## Example API Flow
 
