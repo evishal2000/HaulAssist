@@ -128,47 +128,27 @@ Backend:
 
 Frontend:
 
-HAULASSIST/
-│
-├── backend/                # Backend server code (not expanded here)
-│
-├── frontend/               # Frontend React application
-│   ├── cypress/            # End-to-end tests with Cypress
-│   ├── node_modules/       # Installed npm dependencies
-│   ├── public/             # Static assets (HTML, images, etc.)
-│   └── src/                # Main source code for the React app
-│       ├── Animations/     # Animation utilities or components
-│       ├── Components/     # Reusable UI components
-│       │   ├── ErrorBoundary/
-│       │   ├── Navbar/
-│       │   ├── StyledButton/
-│       │   └── TextInputBox/
-│       ├── Config/         # Configuration files/constants
-│       ├── Features/       # Feature-based modules
-│       │   ├── About/
-│       │   ├── Auth/
-│       │   ├── Bookings/
-│       │   ├── Dashboard/
-│       │   ├── Features/
-│       │   ├── LandingPage/
-│       │   └── Routes/
-│       ├── Images/         # Image assets
-│       └── Utils/          # Utility/helper functions
-│       ├── App.css         # App-level CSS
-│       ├── App.js          # Main App component
-│       ├── App.test.js     # App component tests
-│       ├── index.css       # Global CSS
-│       ├── index.js        # App entry point
-│       ├── reportWebVitals.js # Performance measuring
-│       └── setupTests.js   # Test setup
-│
-├── .env                    # Environment variables
-├── .gitignore              # Git ignore rules
-├── cypress.config.js       # Cypress configuration
-├── package-lock.json       # NPM lockfile
-├── package.json            # Project dependencies and scripts
-└── README.md               # Project documentation
+| Path                        | Purpose/Contents                                 |
+|-----------------------------|--------------------------------------------------|
+| backend/                    | Backend/server-side code                         |
+| frontend/                   | React frontend application                       |
+| ├─ cypress/                 | Cypress E2E tests                                |
+| ├─ public/                  | Static assets                                    |
+| ├─ src/                     | Main source code                                 |
+| │  ├─ Animations/           | Animation utilities/components                   |
+| │  ├─ Components/           | Reusable UI components                           |
+| │  ├─ Config/               | Configuration files/constants                    |
+| │  ├─ Features/             | Feature-based modules                            |
+| │  ├─ Images/               | Image assets                                     |
+| │  ├─ Utils/                | Helper functions                                 |
+| │  ├─ App.js, etc.          | Entry and core files                             |
+| .env                        | Environment variables                            |
+| .gitignore                  | Git ignore rules                                 |
+| cypress.config.js           | Cypress test config                              |
+| package.json                | Project dependencies/scripts                     |
+| README.md                   | Project documentation                            |
 
+---
 ---
 
 
