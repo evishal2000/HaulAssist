@@ -25,6 +25,7 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff     model.Location `json:"dropoff"`
 		PickupTime  time.Time      `json:"pickup_time"`
 		UserID      int64          `json:"user_id"`
+		Cost        float64        `json:"cost"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
@@ -52,6 +53,7 @@ func (app *Application) CreateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff:     req.Dropoff,
 		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
+		Cost:        req.Cost,
 	}
 
 	ctx := r.Context()
@@ -125,6 +127,7 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff     model.Location `json:"dropoff"`
 		PickupTime  time.Time      `json:"pickup_time"`
 		UserID      int64          `json:"user_id"`
+		Cost        float64        `json:"cost"`
 	}
 
 	json.NewDecoder(r.Body).Decode(&req)
@@ -160,6 +163,7 @@ func (app *Application) UpdateCargoHandler(w http.ResponseWriter, r *http.Reques
 		Dropoff:     req.Dropoff,
 		UserID:      claims.UserID,
 		PickupTime:  req.PickupTime,
+		Cost:        req.Cost,
 	}
 
 	ctx := r.Context()

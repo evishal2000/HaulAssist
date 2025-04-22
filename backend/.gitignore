@@ -2,3 +2,4 @@
 .env
 .vscode
 /backend/.env
+/tmp
