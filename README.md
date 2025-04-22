@@ -132,16 +132,16 @@ Frontend:
 |-----------------------------|--------------------------------------------------|
 | backend/                    | Backend/server-side code                         |
 | frontend/                   | React frontend application                       |
-| ├─ cypress/                 | Cypress E2E tests                                |
-| ├─ public/                  | Static assets                                    |
-| ├─ src/                     | Main source code                                 |
-| │  ├─ Animations/           | Animation utilities/components                   |
-| │  ├─ Components/           | Reusable UI components                           |
-| │  ├─ Config/               | Configuration files/constants                    |
-| │  ├─ Features/             | Feature-based modules                            |
-| │  ├─ Images/               | Image assets                                     |
-| │  ├─ Utils/                | Helper functions                                 |
-| │  ├─ App.js, etc.          | Entry and core files                             |
+| - cypress/                 | Cypress E2E tests                                |
+| - public/                  | Static assets                                    |
+| - src/                     | Main source code                                 |
+| - Animations/           | Animation utilities/components                   |
+| ─ Components/           | Reusable UI components                           |
+| ─ Config/               | Configuration files/constants                    |
+| ─ Features/             | Feature-based modules                            |
+| ─ Images/               | Image assets                                     |
+| ─ Utils/                | Helper functions                                 |
+| ─ App.js, etc.          | Entry and core files                             |
 | .env                        | Environment variables                            |
 | .gitignore                  | Git ignore rules                                 |
 | cypress.config.js           | Cypress test config                              |
