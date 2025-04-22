@@ -1,17 +1,149 @@
-# HaulAssist : An On-demand Delivery Service
+# Haul Assist
 
-Handling logistics and assistance tasks, such as transporting goods, managing luggage, or coordinating last-mile deliveries, can be both challenging and time-consuming. Travelers often deal with the hassle of carrying heavy bags at airports and train stations, small businesses encounter unreliable delivery services, and individuals frequently struggle to find trustworthy help for moving or transportation needs.  
+**Haul Assist** is a web platform that helps users book a vehicle to move cargo from one location to another. Users can register, log in, and create cargo bookings that include vehicle type, pickup/dropoff locations, and timing. The platform calculates the cost based on vehicle type and distance using a custom pricing algorithm.
 
-Although the demand for solutions to this problem is rising, existing services are often scattered across various platforms, costly, or inconsistent in quality. This leaves users with limited options and unnecessary stress.  
+---
 
-HaulAssist can address these challenges by providing a unified, easy-to-use platform that connects users with reliable service providers for on-demand logistics and goods delivery. Our hope is to streamline the logistics of everyday tasks, making them quicker, easier, and more dependable.
+## Features
 
-HaulAssist will be implemented with a ReactJS front-end and a NodejS back-end.
+- **JWT-based Authentication**
+- **User Registration and Login**
+- **Cargo Management** (Create, Read, Update, Delete)
+- **Vehicle Booking**
+- **Cost Estimation** based on distance and vehicle type
+- **Protected APIs** (Require access token)
+- **Comprehensive Unit Tests** for models, handlers, and repositories
 
+---
 
-Members:
+## Tech Stack
 
-Anshika Singh, UFID: 26147849 (front-end)
-Kaiser Shareef Shaik, UFID: 85276981 (back-end)
-Vishal Elaka, UFID: 82270259 (front-end)
-Amogh Krishna Padakanti, UFID: 79507251 (back-end)
+| Layer        | Technology        |
+|--------------|-------------------|
+| Backend      | Go (Chi router)   |
+| Frontend     | React             |
+| Database     | Supabase (PostgreSQL) |
+| Auth         | JWT               |
+| Dev Tools    | Air (Go Live Reload) |
+| Testing      | Go + Testify      |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Go 1.20+
+- Node.js & npm
+- [Air](https://github.com/cosmtrek/air) for live reload (install via `go install github.com/cosmtrek/air@latest`)
+
+---
+
+### Run the Project
+
+Run **frontend** and **backend** in two separate terminals.
+
+#### 1 Start the Backend (Go)
+
+```bash
+# In your backend project directory
+air
+```
+
+This starts the Go server with live reloading.
+
+#### 2️ Start the Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+This runs the React app on `http://localhost:3000`.
+
+---
+
+## Authentication
+
+- On successful login, the backend returns an **access token** (JWT).
+- This token must be included in the `Authorization` header for all protected endpoints:
+
+```http
+Authorization: Bearer <your-token>
+```
+
+---
+
+## Cargo Booking Flow
+
+1. **Register or Login** to receive an access token.
+2. Use this token to:
+   - Create cargo (specify vehicle type, pickup/dropoff locations, pickup time)
+   - Get a cost estimate
+   - View and manage existing bookings
+
+Cost is calculated using a custom algorithm based on vehicle type and distance.
+
+---
+
+## Running Tests
+
+Run unit tests for backend components:
+
+```bash
+go test ./...
+```
+
+Tests cover:
+- API Handlers
+- Models
+- Repository Functions
+- App bootstrapping logic
+
+---
+
+## Project Structure
+
+```
+/cmd/api            # Server startup & routing
+/internal
+  /models           # Struct definitions
+  /repository       # DB logic
+  /handlers         # HTTP handlers
+  /env              # Env config
+/frontend           # React frontend
+/tests              # Unit tests
+```
+
+---
+
+## Example API Flow
+
+```http
+POST /register
+POST /login -> returns JWT
+
+POST /cargo           (requires token)
+GET /cargo/:id        (requires token)
+PUT /cargo/:id        (requires token)
+DELETE /cargo/:id     (requires token)
+GET /cargo/history    (requires token)
+```
+
+---
+
+## Example env file
+
+```
+HOST_ADDRESS=:8080
+
+DATABASE_URL=postgresql://postgres:haulassist@db.tovjqupbecldpjmkfskx.supabase.co:5432/postgres
+DB_MAX_OPEN_CONNS=30
+DB_MAX_IDLE_CONNS=30
+DB_MAX_IDLE_TIME=15m
+
+JWT_SECRET=<insert jwt token>
+GOOGLE_MAPS_API_KEY=<insert your Google Maps API key>
+STRIPE_SECRET_KEY=<insert your Stripe api>
+```
