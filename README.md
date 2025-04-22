@@ -106,14 +106,15 @@ Tests cover:
 ## Project Structure
 
 ```
-/cmd/api            # Server startup & routing
-/internal
-  /models           # Struct definitions
-  /repository       # DB logic
-  /handlers         # HTTP handlers
-  /env              # Env config
+/backend
+   /cmd/api            # Server startup & routing
+   /internal
+     /models           # Struct definitions
+     /repository       # DB logic
+     /handlers         # HTTP handlers
+     /env              # Env config
+   /tests              # Unit tests
 /frontend           # React frontend
-/tests              # Unit tests
 ```
 
 ---
