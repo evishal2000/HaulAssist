@@ -24,7 +24,7 @@ describe('Booking Form Flow', () => {
     cy.url().should('include', '/dashboard');
 
     // Click "Book a Haul" button to go to the booking form
-    cy.get('.dashboard-button').click();
+    cy.get('.action-button').click();
     
     // Verify navigation to booking form
     cy.url().should('include', '/booking-form');

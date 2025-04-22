@@ -1,4 +1,64 @@
+# User Story: Enhanced UI/UX, Mobile Responsiveness & Integrated Booking
 
+## Story
+
+**As** a user,  
+**I want** a modern, responsive interface with an intuitive booking experience,  
+**So that** I can seamlessly estimate costs, book cargo hauls, and view my booking history across devices.
+
+---
+
+## Acceptance Criteria
+
+### 1. UI/UX Enhancements
+- Updated visuals and layout across all components.
+- Smooth transitions and consistent user experience.
+- Intuitive form inputs and modal behaviors.
+
+### 2. Mobile Responsiveness
+- Application adapts to various screen sizes.
+- Booking form and booking history are fully usable on mobile devices.
+- Navigation uses a mobile-friendly hamburger menu on smaller screens.
+
+### 3. Integrated Booking Workflow
+- **Booking Form** collects:
+  - Pickup Address
+  - Drop-off Address
+  - Cargo Type
+  - Vehicle Type
+  - Pickup Time
+- On submission:
+  - Estimated cost is shown in a pop-up/modal.
+  - "Confirm" button finalizes and saves the booking.
+- **Bookings Tab** displays history of past bookings with all relevant details.
+
+### 4. Testing
+
+#### Unit Tests
+- Validate login and authentication flow.
+- Ensure form field visibility and validation.
+- Check rendering and interaction of cost estimation modal.
+
+#### E2E Tests (Cypress)
+- Complete booking workflow from input to confirmation to history display.
+- Cross-device testing for responsiveness and interactions.
+
+#### Integration Tests
+- Frontend-backend communication for:
+  - Cost estimation
+  - Booking confirmation
+  - Booking history retrieval
+- Proper error handling and fallback UI for API failures.
+
+---
+
+## Tasks Completed
+
+- [x] Revamped UI components for better design and user experience
+- [x] Implemented full mobile responsiveness
+- [x] Integrated cost estimation and booking confirmation logic
+- [x] Created bookings history display
+- [x] Built and validated unit, integration, and end-to-end tests
 
 # Backend Sprint 4 status
 - Implemented a payments API with Stripe for managing cargo shipping payments.

@@ -25,7 +25,7 @@
 | Database     | Supabase (PostgreSQL) |
 | Auth         | JWT               |
 | Dev Tools    | Air (Go Live Reload) |
-| Testing      | Go + Testify      |
+| Testing      | Go + Testify ,Cypress    |
 
 ---
 
@@ -103,8 +103,18 @@ Tests cover:
 
 ---
 
-## Project Structure
+Run unit tests for frontend components:
+```bash
+npx cypress open 
+```
+or
 
+```bash
+npx cypress run 
+```
+
+## Project Structure
+Backend:
 ```
 /backend
    /cmd/api            # Server startup & routing
@@ -117,7 +127,31 @@ Tests cover:
 /frontend           # React frontend
 ```
 
+Frontend:
+
+| Path                        | Purpose/Contents                                 |
+|-----------------------------|--------------------------------------------------|
+| backend/                    | Backend/server-side code                         |
+| frontend/                   | React frontend application                       |
+| ├─ cypress/                 | Cypress E2E tests                                |
+| ├─ public/                  | Static assets                                    |
+| ├─ src/                     | Main source code                                 |
+| │  ├─ Animations/           | Animation utilities/components                   |
+| │  ├─ Components/           | Reusable UI components                           |
+| │  ├─ Config/               | Configuration files/constants                    |
+| │  ├─ Features/             | Feature-based modules                            |
+| │  ├─ Images/               | Image assets                                     |
+| │  ├─ Utils/                | Helper functions                                 |
+| │  ├─ App.js, etc.          | Entry and core files                             |
+| .env                        | Environment variables                            |
+| .gitignore                  | Git ignore rules                                 |
+| cypress.config.js           | Cypress test config                              |
+| package.json                | Project dependencies/scripts                     |
+| README.md                   | Project documentation                            |
+
 ---
+---
+
 
 ## Example API Flow
 
