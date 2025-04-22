@@ -24,7 +24,7 @@ export const Bookings = () => {
           pickup: `Lat: ${item.pickup.latitude.toFixed(4)}, Lng: ${item.pickup.longitude.toFixed(4)}`,
           dropoff: `Lat: ${item.dropoff.latitude.toFixed(4)}, Lng: ${item.dropoff.longitude.toFixed(4)}`,
           vehicle: item.vehicle_type.charAt(0).toUpperCase() + item.vehicle_type.slice(1),
-          cost: "$100", // Placeholder, replace if you have real cost data
+          cost: "$20", // Placeholder, replace if you have real cost data
           status: "Confirmed", // Placeholder, replace if backend provides this
         }));
 
