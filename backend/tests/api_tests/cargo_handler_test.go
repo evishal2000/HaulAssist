@@ -47,7 +47,7 @@ func TestCreateCargoHandler(t *testing.T) {
 							"longitude": -82.3763855	
 						},
 						"user_id":3,
-						"pickup_time":"2025-03-03T10:30:00Z"
+						"pickup_time":"2025-03-03T10:30:00Z",
 						"cost": 100.50
 					}
 				`
