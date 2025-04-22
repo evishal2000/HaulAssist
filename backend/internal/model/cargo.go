@@ -17,4 +17,5 @@ type Cargo struct {
 	PickupTime  time.Time `json:"pickup_time"`
 	CreatedAt   string    `json:"created_at"`
 	UpdatedAt   string    `json:"updated_at"`
+	Cost        float64   `json:"cost"`
 }
