@@ -50,7 +50,7 @@ Run **frontend** and **backend** in two separate terminals.
 air
 ```
 
-This starts the Go server with live reloading.
+This starts the Go server (on port 8080 by default) with live reloading.
 
 #### 2️ Start the Frontend (React)
 
@@ -117,11 +117,10 @@ npx cypress run
 Backend:
 ```
 /backend
-   /cmd/api            # Server startup & routing
+   /cmd/api            # Server startup & routing (handlers)
    /internal
      /models           # Struct definitions
      /repository       # DB logic
-     /handlers         # HTTP handlers
      /env              # Env config
    /tests              # Unit tests
 /frontend           # React frontend
@@ -159,11 +158,11 @@ Frontend:
 POST /register
 POST /login -> returns JWT
 
+GET /cargoCost/:id        (requires token)
 POST /cargo           (requires token)
-GET /cargo/:id        (requires token)
 PUT /cargo/:id        (requires token)
 DELETE /cargo/:id     (requires token)
-GET /cargo/history    (requires token)
+GET /cargo/bookings    (requires token)
 ```
 
 ---
