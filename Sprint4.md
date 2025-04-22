@@ -1,11 +1,11 @@
 
 
 # Backend Sprint 4 status
--Implemented a payments API with Stripe for managing cargo shipping payments.
--The payment API creates a stripe payment intent and returns a client secret and a payment_id.
--The client secret and the payment_id can be used to make a payment using stripe.
--Added an API to record successful payment into the database.
--Reworked cargo model to store cost internally as opposed to DB, and rewrote unit tests to match new functionality
+- Implemented a payments API with Stripe for managing cargo shipping payments.
+- The payment API creates a stripe payment intent and returns a client secret and a payment_id.
+- The client secret and the payment_id can be used to make a payment using stripe.
+- Added an API to record successful payment into the database.
+- Reworked cargo model to store cost internally as opposed to DB, and rewrote unit tests to match new functionality
 
 
 # Backend Unit Tests
